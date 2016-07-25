@@ -1,4 +1,5 @@
 require "./macros"
 require "redis"
+require "crc16"
 require "./ext/redis/commands"
 require "./cluster"

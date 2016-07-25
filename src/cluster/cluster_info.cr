@@ -6,13 +6,13 @@ class Redis::Cluster::ClusterInfo
   class NodeNotFound < Exception ; end
   class NodeNotUniq  < Exception ; end
     
-  property nodes, slot2nodes, slave_deps
+  property nodes, slot2addr, slave_deps
   
-  @slot2nodes : Hash(Int32, NodeInfo)
+  @slot2addr : Hash(Int32, Addr)
   @slave_deps : Hash(NodeInfo, Array(NodeInfo))
   
   def initialize(@nodes : Array(NodeInfo))
-    @slot2nodes = build_slot2nodes
+    @slot2addr = build_slot2addr
     @slave_deps = build_slave_deps
   end
 
@@ -93,7 +93,7 @@ class Redis::Cluster::ClusterInfo
   end
 
   def open_slots : Array(Int32)
-    Slot::RANGE.to_a - slot2nodes.keys
+    Slot::RANGE.to_a - slot2addr.keys
   end
 
   def active?(node : NodeInfo, counts : Counts)
@@ -138,12 +138,12 @@ class Redis::Cluster::ClusterInfo
     return slaves
   end
 
-  private def build_slot2nodes
-    Hash(Int32, NodeInfo).new.tap {|hash|
+  private def build_slot2addr
+    Hash(Int32, Addr).new.tap {|hash|
       nodes.each do |node|
         next unless node.master? && node.slot?
         node.slot.each do |slot|
-          hash[slot] = node
+          hash[slot] = Addr.new(node.host, node.port)
         end
       end
     }

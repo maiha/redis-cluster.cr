@@ -10,6 +10,10 @@ module Redis::Cluster
 
     delegate size, to: to_s
 
+    def self.new(host : String, port : Int32)
+      new(host, port, port + CLUSTER_PORT_INCR)
+    end
+
     def self.parse(str : String)
       case str
       when /\A([^:]*):(\d+)@(\d+)\Z/ # busport format

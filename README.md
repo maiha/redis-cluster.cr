@@ -1,4 +1,4 @@
-# redis-cluster
+[![Build Status](https://travis-ci.org/maiha/redis-cluster.cr.svg?branch=master)](https://travis-ci.org/maiha/redis-cluster.cr)
 
 redis-cluster library for Crystal
 
@@ -21,18 +21,28 @@ dependencies:
 
 ```crystal
 require "redis-cluster"
+
+bootstrap = "127.0.0.1:7001,127.0.0.1:7002"
+cluster = Redis::Cluster.new(bootstrap)
+
+cluster.set "foo", "123"
+cluster.get "foo"         # => "123"
+cluster.counts.values     # => [0, 0, 1]
+
+cluster.close
 ```
 
+## Supported API
 
-TODO: Write usage instructions here
+#### v0.2.0
 
-## Development
-
-TODO: Write development instructions here
+- [x] get
+- [x] set
+- [x] counts
 
 ## Contributing
 
-1. Fork it ( https://github.com/maiha/redis-cluster/fork )
+1. Fork it ( https://github.com/maiha/redis-cluster.cr/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)

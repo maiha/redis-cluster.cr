@@ -35,4 +35,11 @@ describe Redis::Cluster::Slot do
       slot.set.should eq Set{0, 1, 2, 3, 10, 20, 21, 30, 31, 32, 16380, 16381, 16382, 16383}
     end
   end
+
+  describe ".slot" do
+    it "calculate slot" do
+      Redis::Cluster::Slot.slot("1234").should eq(6025)
+      Redis::Cluster::Slot.slot("3194").should eq(3194)
+    end
+  end
 end
