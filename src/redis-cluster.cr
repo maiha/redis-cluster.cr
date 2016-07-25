@@ -1,4 +1,4 @@
-require "./redis-cluster/*"
-
-module Redis::Cluster
-end
+require "./macros"
+require "redis"
+require "./ext/redis/commands"
+require "./cluster"

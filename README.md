@@ -1,6 +1,8 @@
 # redis-cluster
 
-TODO: Write a description here
+redis-cluster library for Crystal
+
+- tested on crystal-0.18.7
 
 ## Installation
 
