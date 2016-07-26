@@ -9,7 +9,8 @@ describe Redis::Cluster do
     it "we don't have cluster instances yet on travis" do
       cluster = Redis::Cluster.new("127.0.0.1:6379")
       # "ERR This instance has cluster support disabled"
-      expect_raises Redis::Error, /cluster support/ do
+      # "ERR unknown command 'CLUSTER'"
+      expect_raises Redis::Error, /cluster/i do
         cluster.cluster_info
       end
     end
