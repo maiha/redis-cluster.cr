@@ -1,13 +1,31 @@
 module Redis::Cluster::Commands
   abstract def redis(key : String) : Redis
 
-  def get(key)
-    redis(key).get(key)
+  # [proxy] macro
+  # "proxy get, key" generates
+  #
+  # def get(key)
+  #   redis(key).get(key)
+  # rescue moved : Redis::Error::Moved
+  #   on_moved(moved)
+  #   redis(key).get(key)
+  # rescue ask : Redis::Error::Ask
+  #   redis(Addr.parse(ask.to)).get(key)
+  # end
+
+  macro proxy(name, *args)
+    def {{ name.id }}({{ args.join(",").id }})
+      redis(key).{{ name.id }}({{ args.join(",").id }})
+    rescue moved : Redis::Error::Moved
+      on_moved(moved)
+      redis(key).{{ name.id }}({{ args.join(",").id }})
+    rescue ask : Redis::Error::Ask
+      redis(Addr.parse(ask.to)).{{ name.id }}({{ args.join(",").id }})
+    end
   end
-  
-  def set(key, val)
-    redis(key).set(key, val)
-  end
+
+  proxy get, key
+  proxy set, key, val
 
   # **Return value**: -1 when redis level error
   def counts : Counts

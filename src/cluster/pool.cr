@@ -6,7 +6,6 @@ module Redis::Cluster::Pool
   end
   
   def redis(key : String)
-    ready!
     redis(addr(key))
   end
 
@@ -29,8 +28,14 @@ module Redis::Cluster::Pool
     @addr2redis[addr] ||= new_redis(addr.host, addr.port)
   end
 
-  private def addr(key : String)
+  def addr(key : String)
+    ready!
     slot = Slot.slot(key)
     return @slot2addr.fetch(slot) { raise "This cluster doesn't cover slot=#{slot} (key=#{key.inspect})" }
+  end
+
+  # public method : for spec
+  def on_moved(moved : Redis::Error::Moved)
+    @slot2addr[moved.slot] = Addr.parse(moved.to)
   end
 end

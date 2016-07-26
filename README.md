@@ -34,6 +34,11 @@ cluster.close
 
 ## Supported API
 
+#### v0.3.0
+
+- [x] redirection MOVED
+- [x] redirection ASK
+
 #### v0.2.0
 
 - [x] get
