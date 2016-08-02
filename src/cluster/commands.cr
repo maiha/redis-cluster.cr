@@ -21,6 +21,8 @@ module Redis::Cluster::Commands
       redis(key).{{ name.id }}({{ args.join(",").id }})
     rescue ask : Redis::Error::Ask
       redis(Addr.parse(ask.to)).{{ name.id }}({{ args.join(",").id }})
+    rescue err : Errno
+      redis(key).{{ name.id }}({{ args.join(",").id }})
     end
   end
 
