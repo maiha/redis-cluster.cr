@@ -34,6 +34,11 @@ cluster.close
 
 ## Supported API
 
+#### v0.4.0
+
+- [ ] Commands : Sets
+- [ ] Commands : Hashes
+
 #### v0.3.0
 
 - [x] redirection MOVED

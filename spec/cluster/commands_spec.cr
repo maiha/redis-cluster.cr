@@ -3,6 +3,9 @@ require "./spec_helper"
 describe Redis::Cluster::Commands do
   info = load_cluster_info("nodes/m1-6379.nodes")
 
+  ######################################################################
+  ### Strings
+  
   describe "#get" do
     it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
@@ -21,22 +24,30 @@ describe Redis::Cluster::Commands do
     end
   end
 
-  describe "#counts" do
-    it "connect to redis" do
+  ######################################################################
+  ### Sets
+  
+  describe "#sadd" do
+    it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
-      cluster.counts.size.should eq(1)
+      cluster.sadd("myset", "Hello")
+      cluster.sadd("myset", "World")
+      cluster.sadd("myset", "World")
       cluster.close
     end
   end
 
-  describe "#info" do
-    it "shows given info" do
+  describe "#smembers" do
+    it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
-      cluster.info("v").size.should eq(1)
+      cluster.smembers("myset").map(&.to_s).sort.should eq(["Hello", "World"])
       cluster.close
     end
   end
 
+  ######################################################################
+  ### Hashes
+  
   describe "#hset" do
     it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
@@ -59,6 +70,25 @@ describe Redis::Cluster::Commands do
     it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
       cluster.hgetall("myhash1").should eq(["field1", "Hello", "field2", "World"])
+      cluster.close
+    end
+  end
+
+  ######################################################################
+  ### Aggregations
+  
+  describe "#counts" do
+    it "connect to redis" do
+      cluster = Redis::Cluster.new(info)
+      cluster.counts.size.should eq(1)
+      cluster.close
+    end
+  end
+
+  describe "#info" do
+    it "shows given info" do
+      cluster = Redis::Cluster.new(info)
+      cluster.info("v").size.should eq(1)
       cluster.close
     end
   end
