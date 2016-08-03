@@ -31,3 +31,11 @@ def node_mark(node : NodeInfo)
     "S"
   end
 end
+
+def array2hash(args : Array(String))
+  hash = Hash(String, String).new
+  args.each_with_index do |v, i|
+    hash[args[i-1].not_nil!] = v if i.odd?
+  end
+  return hash
+end

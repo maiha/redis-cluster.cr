@@ -69,7 +69,17 @@ describe Redis::Cluster::Commands do
   describe "#hgetall" do
     it "connect to proper node" do
       cluster = Redis::Cluster.new(info)
-      cluster.hgetall("myhash1").should eq(["field1", "Hello", "field2", "World"])
+      array = cluster.hgetall("myhash1").map(&.to_s)
+      array2hash(array).should eq({"field1" => "Hello", "field2" => "World"})
+      cluster.close
+    end
+  end
+
+  describe "#hdel" do
+    it "connect to proper node" do
+      cluster = Redis::Cluster.new(info)
+      cluster.hdel("myhash1", "field1")
+      cluster.hget("myhash1", "field1").should eq(nil)
       cluster.close
     end
   end

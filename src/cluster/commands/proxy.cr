@@ -8,6 +8,7 @@ module Redis::Cluster::Commands
   proxy smembers, key
 
   # Hashes
+  proxy hdel, key, field
   proxy hget, key, field
   proxy hset, key, field, val
   proxy hgetall, key
