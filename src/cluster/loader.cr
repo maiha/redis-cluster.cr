@@ -4,7 +4,7 @@ module Redis::Cluster
     addrs.each do |addr|
       redis = nil
       begin
-        redis = Redis.new(addr.host, addr.port, pass)
+        redis = Redis.new(host: addr.host, port: addr.port, password: pass)
         return ClusterInfo.parse(redis.not_nil!.nodes)
       rescue err
         # #<Errno:0xd37a40 @message="Error connecting to '127.0.0.1:7001': Connection refused"
