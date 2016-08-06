@@ -1,6 +1,22 @@
 require "./spec_helper"
 
+private def addr(host, port)
+  Redis::Cluster::Addr.new(host, port)
+end
+
 describe Redis::Cluster::Addr do
+  describe "equality" do
+    it "should test by value" do
+      addr("a",1).should eq(addr("a",1))
+      addr("a",1).should_not eq(addr("a",2))
+      addr("a",1).should_not eq(addr("b",1))
+    end
+
+    it "should index from Array" do
+      [addr("a",1),addr("a",2)].index(addr("a",1)).should eq(0)
+    end
+  end
+
   describe ".parse" do
     it "should treat a empty host as 127.0.0.1" do
       addr = Redis::Cluster::Addr.parse(":7001")
