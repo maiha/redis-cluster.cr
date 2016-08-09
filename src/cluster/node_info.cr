@@ -23,6 +23,10 @@ record Redis::Cluster::NodeInfo,
     "#{sha1}??????"[0..5]
   end
 
+  def signature
+    "#{sha1}:#{slot.signature}"
+  end
+
   def role
     flags.sub(/myself,/, "")
   end

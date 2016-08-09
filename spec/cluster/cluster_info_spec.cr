@@ -75,6 +75,20 @@ describe Redis::Cluster::ClusterInfo do
     info.open_slots.should eq((9991..9999).to_a)
   end
 
+  describe "(special states)" do
+    it "parses signatures" do
+      info = Redis::Cluster::ClusterInfo.parse <<-EOF
+        2db26dd98c89a37be9a97ff4b87735c568efe535 127.0.0.1:7101 myself,master - 0 0 1 connected 0-1000 1500 2001-3000 [7->-c795516499b9b71b6ba0b14ca5202cea3dd27749]
+        c795516499b9b71b6ba0b14ca5202cea3dd27749 127.0.0.1:7102 master - 0 1470757457132 0 connected
+        EOF
+
+      info.nodes.map(&.signature).should eq([
+        "2db26dd98c89a37be9a97ff4b87735c568efe535:0-1000,1500,2001-3000",
+        "c795516499b9b71b6ba0b14ca5202cea3dd27749:"
+      ])
+    end
+  end
+
   describe "(broken data)" do
     it "works when slave has a missing master reference" do
       info = Redis::Cluster::ClusterInfo.parse <<-EOF

@@ -5,6 +5,8 @@ module Redis::Cluster
     RANGE = (FIRST..LAST)
     SIZE  = RANGE.size
 
+    DELIMITER = /[,\s]+/
+    
     def self.zero
       Slot.new("", Set(Int32).new)
     end
@@ -15,12 +17,11 @@ module Redis::Cluster
 
     def self.parse(str : String) : Slot
       str = str.strip
-      delimiter = /[,\s]+/
       case str
       when ""
         return Slot.zero
-      when delimiter
-        slots = str.split(delimiter).map{|s| parse(s.strip)}
+      when DELIMITER
+        slots = str.split(DELIMITER).map{|s| parse(s.strip)}
         return slots.reduce(Slot.zero) {|a,s| a + s}
       when /\A(\d+)\Z/
         return Slot.new("#{$1}", Set{$1.to_i})
@@ -45,6 +46,16 @@ module Redis::Cluster
     property label, set, flags
 
     def initialize(@label : String, @set : Set(Int32), @flags : Hash(Int32, String) = Hash(Int32, String).new)
+    end
+
+    # special states: MIGRATING or IMPORTING
+    def special?
+      flags.any?
+    end
+
+    # same as name except special slots
+    def signature
+      @label.split(DELIMITER).grep(/\A\d+($|-)/).sort_by(&.scan(/^(\d+)/).map(&.[0]).join.to_i).join(",")
     end
 
     def slots

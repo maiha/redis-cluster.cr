@@ -16,7 +16,21 @@ describe Redis::Cluster::NodeInfo do
       node = Redis::Cluster::NodeInfo.parse <<-EOF
         5ac5361 127.0.0.1:7001 myself,master - 0 0 0 connected 5 8 10-15
       EOF
-      node.slot.to_s.should eq("5,8,10-15")
+      node.slot.label.should eq("5,8,10-15")
+    end
+
+    it "should accept multiple keyslots with special states" do
+      node = Redis::Cluster::NodeInfo.parse <<-EOF
+        5ac5361 127.0.0.1:7001 myself,master - 0 0 0 connected 5 [3->-aaa] 10-15 [20-<-bbb] 8
+      EOF
+      node.slot.label.should eq("5,3>,10-15,20<,8")
+    end
+
+    it "#slot.signature should sort multiple keyslots as number with ignoring '[' prefixed slots" do
+      node = Redis::Cluster::NodeInfo.parse <<-EOF
+        5ac5361 127.0.0.1:7001 myself,master - 0 0 0 connected 5 [3->-aaa] 10-15 [20-<-bbb] 8
+      EOF
+      node.slot.signature.should eq("5,8,10-15")
     end
 
     describe "(IMPORTING)" do
