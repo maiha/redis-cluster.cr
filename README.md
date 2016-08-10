@@ -18,6 +18,7 @@ dependencies:
 
 ## Usage
 
+- assumes that our cluster is runing on localhost:7001 and 7002, ...
 
 ```crystal
 require "redis-cluster"
