@@ -4,6 +4,7 @@ module Redis::Cluster
     LAST  = 16383
     RANGE = (FIRST..LAST)
     SIZE  = RANGE.size
+    MASK  = 0x3FFF              # fast modulo for 16384
 
     DELIMITER = /[,\s]+/
     
@@ -12,7 +13,8 @@ module Redis::Cluster
     end
 
     def self.slot(key : String) : Int32
-      (Crc16.crc16(key) % SIZE).to_i32
+      key = $1 if key =~ /{(.*?)}/
+      (Crc16.crc16(key) & MASK).to_i32
     end
 
     def self.parse(str : String) : Slot

@@ -41,5 +41,21 @@ describe Redis::Cluster::Slot do
       Redis::Cluster::Slot.slot("1234").should eq(6025)
       Redis::Cluster::Slot.slot("3194").should eq(3194)
     end
+
+    it "calculate slot with hash tags" do
+      Redis::Cluster::Slot.slot("{3194}{").should eq(3194)
+      Redis::Cluster::Slot.slot("x{3194}}}").should eq(3194)
+      Redis::Cluster::Slot.slot("x{3194}y{a}").should eq(3194)
+
+      Redis::Cluster::Slot.slot("3{194").should eq(1305)
+      Redis::Cluster::Slot.slot("x{3{194}y{a}").should eq(1305)
+      
+      Redis::Cluster::Slot.slot("3{19").should eq(3602)
+      Redis::Cluster::Slot.slot("x{3{19}4}y{a}").should eq(3602)
+
+      Redis::Cluster::Slot.slot("{3194").should eq(15619)
+      Redis::Cluster::Slot.slot("x{3194").should eq(13789)
+      Redis::Cluster::Slot.slot("}{{").should eq(262)
+    end
   end
 end
