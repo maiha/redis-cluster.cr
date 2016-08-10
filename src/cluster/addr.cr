@@ -14,6 +14,10 @@ module Redis::Cluster
       new(host, port, port + CLUSTER_PORT_INCR)
     end
 
+    def self.zero
+      new(DEFAULT_HOST, DEFAULT_PORT)
+    end
+
     def self.parse(str : String)
       case str
       when /\A([^:]*):(\d+)@(\d+)\Z/ # busport format
