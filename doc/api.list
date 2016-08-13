@@ -1,0 +1,197 @@
+cluster	cluster addslots
+cluster	cluster count-failure-reports
+cluster	cluster countkeysinslot
+cluster	cluster delslots
+cluster	cluster failover
+cluster	cluster forget
+cluster	cluster getkeysinslot
+cluster	cluster info
+cluster	cluster keyslot
+cluster	cluster meet
+cluster	cluster nodes
+cluster	cluster replicate
+cluster	cluster reset
+cluster	cluster saveconfig
+cluster	cluster set-config-epoch
+cluster	cluster setslot
+cluster	cluster slaves
+cluster	cluster slots
+cluster	readonly
+cluster	readwrite
+connection	auth
+connection	echo
+connection	ping
+connection	quit
+connection	select
+generic	del
+generic	dump
+generic	exists
+generic	expire
+generic	expireat
+generic	keys
+generic	migrate
+generic	move
+generic	object
+generic	persist
+generic	pexpire
+generic	pexpireat
+generic	pttl
+generic	randomkey
+generic	rename
+generic	renamenx
+generic	restore
+generic	scan
+generic	sort
+generic	ttl
+generic	type
+generic	wait
+geo	geoadd
+geo	geodist
+geo	geohash
+geo	geopos
+geo	georadius
+geo	georadiusbymember
+hash	hdel
+hash	hexists
+hash	hget
+hash	hgetall
+hash	hincrby
+hash	hincrbyfloat
+hash	hkeys
+hash	hlen
+hash	hmget
+hash	hmset
+hash	hscan
+hash	hset
+hash	hsetnx
+hash	hstrlen
+hash	hvals
+hyperloglog	pfadd
+hyperloglog	pfcount
+hyperloglog	pfmerge
+list	blpop
+list	brpop
+list	brpoplpush
+list	lindex
+list	linsert
+list	llen
+list	lpop
+list	lpush
+list	lpushx
+list	lrange
+list	lrem
+list	lset
+list	ltrim
+list	rpop
+list	rpoplpush
+list	rpush
+list	rpushx
+pubsub	psubscribe
+pubsub	publish
+pubsub	pubsub
+pubsub	punsubscribe
+pubsub	subscribe
+pubsub	unsubscribe
+scripting	eval
+scripting	evalsha
+scripting	script debug
+scripting	script exists
+scripting	script flush
+scripting	script kill
+scripting	script load
+server	bgrewriteaof
+server	bgsave
+server	client getname
+server	client kill
+server	client list
+server	client pause
+server	client reply
+server	client setname
+server	command
+server	command count
+server	command getkeys
+server	command info
+server	config get
+server	config resetstat
+server	config rewrite
+server	config set
+server	dbsize
+server	debug object
+server	debug segfault
+server	flushall
+server	flushdb
+server	info
+server	lastsave
+server	monitor
+server	role
+server	save
+server	shutdown
+server	slaveof
+server	slowlog
+server	sync
+server	time
+set	sadd
+set	scard
+set	sdiff
+set	sdiffstore
+set	sinter
+set	sinterstore
+set	sismember
+set	smembers
+set	smove
+set	spop
+set	srandmember
+set	srem
+set	sscan
+set	sunion
+set	sunionstore
+sorted_set	zadd
+sorted_set	zcard
+sorted_set	zcount
+sorted_set	zincrby
+sorted_set	zinterstore
+sorted_set	zlexcount
+sorted_set	zrange
+sorted_set	zrangebylex
+sorted_set	zrangebyscore
+sorted_set	zrank
+sorted_set	zrem
+sorted_set	zremrangebylex
+sorted_set	zremrangebyrank
+sorted_set	zremrangebyscore
+sorted_set	zrevrange
+sorted_set	zrevrangebylex
+sorted_set	zrevrangebyscore
+sorted_set	zrevrank
+sorted_set	zscan
+sorted_set	zscore
+sorted_set	zunionstore
+string	append
+string	bitcount
+string	bitfield
+string	bitop
+string	bitpos
+string	decr
+string	decrby
+string	get
+string	getbit
+string	getrange
+string	getset
+string	incr
+string	incrby
+string	incrbyfloat
+string	mget
+string	mset
+string	msetnx
+string	psetex
+string	set
+string	setbit
+string	setex
+string	setnx
+string	setrange
+string	strlen
+transactions	discard
+transactions	exec
+transactions	multi
+transactions	unwatch
+transactions	watch

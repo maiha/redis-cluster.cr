@@ -4,8 +4,8 @@ redis-cluster library for Crystal
 
 - tested on crystal-0.18.7
 
-## Installation
 
+## Installation
 
 Add this to your application's `shard.yml`:
 
@@ -33,28 +33,18 @@ cluster.counts.values     # => [0, 0, 1]
 cluster.close
 ```
 
+
 ## Supported API
+
+see [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
+
+
+## TODO
 
 #### v0.5.0
 
 - [ ] Commands : Lists
 
-#### v0.4.0
-
-- [x] Commands : Keys (excepts: MIGRATE, MOVE, OBJECT, RESTORE, SORT, WAIT, SCAN)
-- [x] Commands : Sets
-- [x] Commands : Hashes
-
-#### v0.3.0
-
-- [x] redirection MOVED
-- [x] redirection ASK
-
-#### v0.2.0
-
-- [x] get
-- [x] set
-- [x] counts
 
 ## Contributing
 
@@ -63,6 +53,7 @@ cluster.close
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
 5. Create a new Pull Request
+
 
 ## Contributors
 
