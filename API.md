@@ -76,27 +76,27 @@
 |`pfcount`|    |    |    |
 |`pfmerge`|    |    |    |
 
-### List (0 / 17)
+### List (17 / 17)
 
 |Command     |impl|test|note|
 |------------|:--:|:--:|----|
-|`blpop`     |    |    |    |
-|`brpop`     |    |    |    |
-|`brpoplpush`|    |    |    |
-|`lindex`    |    |    |    |
-|`linsert`   |    |    |    |
-|`llen`      |    |    |    |
-|`lpop`      |    |    |    |
-|`lpush`     |    |    |    |
-|`lpushx`    |    |    |    |
-|`lrange`    |    |    |    |
-|`lrem`      |    |    |    |
-|`lset`      |    |    |    |
-|`ltrim`     |    |    |    |
-|`rpop`      |    |    |    |
-|`rpoplpush` |    |    |    |
-|`rpush`     |    |    |    |
-|`rpushx`    |    |    |    |
+|`blpop`     |  ✓ |  ✓ |    |
+|`brpop`     |  ✓ |  ✓ |    |
+|`brpoplpush`|  ✓ |  ✓ |    |
+|`lindex`    |  ✓ |  ✓ |    |
+|`linsert`   |  ✓ |  ✓ |    |
+|`llen`      |  ✓ |  ✓ |    |
+|`lpop`      |  ✓ |  ✓ |    |
+|`lpush`     |  ✓ |  ✓ |    |
+|`lpushx`    |  ✓ |  ✓ |    |
+|`lrange`    |  ✓ |  ✓ |    |
+|`lrem`      |  ✓ |  ✓ |    |
+|`lset`      |  ✓ |  ✓ |    |
+|`ltrim`     |  ✓ |  ✓ |    |
+|`rpop`      |  ✓ |  ✓ |    |
+|`rpoplpush` |  ✓ |  ✓ |    |
+|`rpush`     |  ✓ |  ✓ |    |
+|`rpushx`    |  ✓ |    |    |
 
 ### Pubsub (0 / 6)
 

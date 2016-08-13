@@ -15,6 +15,27 @@ module Redis::Cluster::Commands
   # [custom] randomkey
   proxy ttl, key
   proxy type, key
+
+  # Lists
+  proxy rpush, key, *values
+  proxy lpush, key, *values
+  proxy lpush, key, values
+  proxy lpushx, key, value
+  proxy rpushx, key, value
+  proxy lrem, key, count, value
+  proxy llen, key
+  proxy lindex, key, index
+  proxy lset, key, index, value
+  proxy lpop, key
+  proxy rpop, key
+  proxy linsert, key, where, pivot, value
+  proxy lrange, key, from, to
+  proxy ltrim, key, start, stop
+  proxy_ary blpop, keys, timeout_in_seconds
+  proxy_ary brpop, keys, timeout_in_seconds
+  proxy rpoplpush, key, destination
+  proxy brpoplpush, key, destination
+  proxy brpoplpush, key, destination, timeout_in_seconds
   
   # Strings
   proxy get, key
