@@ -32,6 +32,7 @@ rpush
 lrange
 lpush
 lpushx
+rpushx
 lrem
 llen
 lset

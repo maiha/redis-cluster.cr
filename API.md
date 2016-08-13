@@ -96,7 +96,7 @@
 |`rpop`      |  ✓ |  ✓ |    |
 |`rpoplpush` |  ✓ |  ✓ |    |
 |`rpush`     |  ✓ |  ✓ |    |
-|`rpushx`    |  ✓ |    |    |
+|`rpushx`    |  ✓ |  ✓ |    |
 
 ### Pubsub (0 / 6)
 
