@@ -2,12 +2,15 @@ require "./spec_helper"
 
 describe "Commands" do
   describe "Sets" do
-    it "#sadd / #smembers" do
+    it "#sadd" do
       redis.del("myset")
       redis.sadd("myset", "Hello").should eq(1)
       redis.sadd("myset", "World").should eq(1)
       redis.sadd("myset", "World").should eq(0)
       redis.sadd("myset", ["Foo", "Bar"]).should eq(2)
+    end
+
+    it "#smembers" do
       sort(redis.smembers("myset")).should eq(["Bar", "Foo", "Hello", "World"])
     end
 

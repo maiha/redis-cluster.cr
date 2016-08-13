@@ -5,6 +5,7 @@ randomkey
 exists
 keys
 sadd
+smembers
 scard
 sismember
 srem
@@ -17,6 +18,9 @@ sunion
 sunionstore
 smove
 srandmember
+sscan
+counts
+info
 expire
 expireat
 ttl
@@ -25,6 +29,7 @@ pexpireat
 pttl
 persist
 hset
+hget
 hgetall
 hdel
 hexists

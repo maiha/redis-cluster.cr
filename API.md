@@ -3,7 +3,7 @@
 ### Connection (0 / 5)
 
 |Command |impl|test|note|
-|--------|----|----|----|
+|--------|:--:|:--:|----|
 |`auth`  |    |    |    |
 |`echo`  |    |    |    |
 |`ping`  |    |    |    |
@@ -13,7 +13,7 @@
 ### Generic (16 / 22)
 
 |Command    |impl|test|note|
-|-----------|----|----|----|
+|-----------|:--:|:--:|----|
 |`del`      |  ✓ |  ✓ |    |
 |`dump`     |  ✓ |    |    |
 |`exists`   |  ✓ |  ✓ |    |
@@ -40,7 +40,7 @@
 ### Geo (0 / 6)
 
 |Command            |impl|test|note|
-|-------------------|----|----|----|
+|-------------------|:--:|:--:|----|
 |`geoadd`           |    |    |    |
 |`geodist`          |    |    |    |
 |`geohash`          |    |    |    |
@@ -51,10 +51,10 @@
 ### Hash (14 / 15)
 
 |Command       |impl|test|note|
-|--------------|----|----|----|
+|--------------|:--:|:--:|----|
 |`hdel`        |  ✓ |  ✓ |    |
 |`hexists`     |  ✓ |  ✓ |    |
-|`hget`        |  ✓ |    |    |
+|`hget`        |  ✓ |  ✓ |    |
 |`hgetall`     |  ✓ |  ✓ |    |
 |`hincrby`     |  ✓ |  ✓ |    |
 |`hincrbyfloat`|  ✓ |  ✓ |    |
@@ -65,13 +65,13 @@
 |`hscan`       |  ✓ |  ✓ |    |
 |`hset`        |  ✓ |  ✓ |    |
 |`hsetnx`      |  ✓ |  ✓ |    |
-|`hstrlen`     |    |    |    |
+|`hstrlen`     |    |    |Available since 3.2.0.|
 |`hvals`       |  ✓ |  ✓ |    |
 
 ### Hyperloglog (0 / 3)
 
 |Command  |impl|test|note|
-|---------|----|----|----|
+|---------|:--:|:--:|----|
 |`pfadd`  |    |    |    |
 |`pfcount`|    |    |    |
 |`pfmerge`|    |    |    |
@@ -79,7 +79,7 @@
 ### List (0 / 17)
 
 |Command     |impl|test|note|
-|------------|----|----|----|
+|------------|:--:|:--:|----|
 |`blpop`     |    |    |    |
 |`brpop`     |    |    |    |
 |`brpoplpush`|    |    |    |
@@ -101,7 +101,7 @@
 ### Pubsub (0 / 6)
 
 |Command       |impl|test|note|
-|--------------|----|----|----|
+|--------------|:--:|:--:|----|
 |`psubscribe`  |    |    |    |
 |`publish`     |    |    |    |
 |`pubsub`      |    |    |    |
@@ -112,7 +112,7 @@
 ### Scripting (0 / 7)
 
 |Command        |impl|test|note|
-|---------------|----|----|----|
+|---------------|:--:|:--:|----|
 |`eval`         |    |    |    |
 |`evalsha`      |    |    |    |
 |`script debug` |    |    |    |
@@ -124,7 +124,7 @@
 ### Server (2 / 31)
 
 |Command           |impl|test|note|
-|------------------|----|----|----|
+|------------------|:--:|:--:|----|
 |`bgrewriteaof`    |    |    |    |
 |`bgsave`          |    |    |    |
 |`client getname`  |    |    |    |
@@ -146,7 +146,7 @@
 |`debug segfault`  |    |    |    |
 |`flushall`        |  ✓ |    |    |
 |`flushdb`         |    |    |    |
-|`info`            |  ✓ |    |    |
+|`info`            |  ✓ |  ✓ |    |
 |`lastsave`        |    |    |    |
 |`monitor`         |    |    |    |
 |`role`            |    |    |    |
@@ -160,7 +160,7 @@
 ### Set (15 / 15)
 
 |Command      |impl|test|note|
-|-------------|----|----|----|
+|-------------|:--:|:--:|----|
 |`sadd`       |  ✓ |  ✓ |    |
 |`scard`      |  ✓ |  ✓ |    |
 |`sdiff`      |  ✓ |  ✓ |    |
@@ -168,19 +168,19 @@
 |`sinter`     |  ✓ |  ✓ |    |
 |`sinterstore`|  ✓ |  ✓ |    |
 |`sismember`  |  ✓ |  ✓ |    |
-|`smembers`   |  ✓ |    |    |
+|`smembers`   |  ✓ |  ✓ |    |
 |`smove`      |  ✓ |  ✓ |    |
 |`spop`       |  ✓ |  ✓ |    |
 |`srandmember`|  ✓ |  ✓ |    |
 |`srem`       |  ✓ |  ✓ |    |
-|`sscan`      |  ✓ |    |    |
+|`sscan`      |  ✓ |  ✓ |    |
 |`sunion`     |  ✓ |  ✓ |    |
 |`sunionstore`|  ✓ |  ✓ |    |
 
 ### Sorted_set (0 / 21)
 
 |Command           |impl|test|note|
-|------------------|----|----|----|
+|------------------|:--:|:--:|----|
 |`zadd`            |    |    |    |
 |`zcard`           |    |    |    |
 |`zcount`          |    |    |    |
@@ -206,7 +206,7 @@
 ### String (7 / 24)
 
 |Command      |impl|test|note|
-|-------------|----|----|----|
+|-------------|:--:|:--:|----|
 |`append`     |    |    |    |
 |`bitcount`   |    |    |    |
 |`bitfield`   |    |    |    |
@@ -235,7 +235,7 @@
 ### Transactions (0 / 5)
 
 |Command  |impl|test|note|
-|---------|----|----|----|
+|---------|:--:|:--:|----|
 |`discard`|    |    |    |
 |`exec`   |    |    |    |
 |`multi`  |    |    |    |

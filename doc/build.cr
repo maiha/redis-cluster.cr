@@ -3,12 +3,17 @@
 list = File.read_lines("#{__DIR__}/api.list").map(&.chomp)
 impl = File.read_lines("#{__DIR__}/api.impl").map(&.chomp)
 test = File.read_lines("#{__DIR__}/api.test").map(&.chomp)
+note = File.read("#{__DIR__}/api.note")
 
 group = nil
 items = [] of String
 
-count = ->(g : String) {
-  list.count(&.=~ /^#{g}/)
+count = ->(g : String) { list.count(&.=~ /^#{g}/) }
+note_for = ->(key : String) {
+  note.scan(/^#{key}\t(.*?)$/m) do
+    return $1
+  end
+  return nil
 }
 
 flush = ->(g : String?) {
@@ -27,13 +32,13 @@ flush = ->(g : String?) {
   puts "### #{g.capitalize} (#{ok} / #{all})"
   puts ""
   puts "|%-#{max}s|impl|test|note|" % "Command"
-  puts "|%s|----|----|----|" % ("-" * max)
+  puts "|%s|:--:|:--:|----|" % ("-" * max)
 
   items.each do |key|
     name = "%-#{max}s" % "`#{key}`"
     implemented = impl.includes?(key) ? "  ✓ " : "    "
     tested      = test.includes?(key) ? "  ✓ " : "    "
-    noted       = "    "
+    noted       = note_for.call(key) || "    "
     puts "|#{name}|#{implemented}|#{tested}|#{noted}|"
   end
   puts ""

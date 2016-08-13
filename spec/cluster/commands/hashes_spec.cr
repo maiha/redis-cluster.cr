@@ -2,9 +2,12 @@ require "./spec_helper"
 
 describe "Commands" do
   describe "Hashes" do
-    it "#hset / #hget" do
+    it "#hset" do
       redis.del("myhash")
       redis.hset("myhash", "a", "434")
+    end
+
+    it "#hget" do
       redis.hget("myhash", "a").should eq("434")
     end
 
