@@ -1,4 +1,10 @@
 module Redis::Cluster::Commands
+  def flushall
+    nodes.select(&.master?).map{|n|
+      redis(n.addr).flushall
+    }
+  end
+
   # **Return value**: -1 when redis level error
   def counts : Counts
     nodes.reduce(Counts.new) do |h, n|
