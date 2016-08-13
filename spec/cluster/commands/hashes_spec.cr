@@ -1,12 +1,6 @@
 require "./spec_helper"
 
-# derived from "crystal-redis.cr"
-
 describe "Commands" do
-  info = load_cluster_info("nodes/m1-6379.nodes")
-  redis = Redis::Cluster.new(info)
-  redis.flushall
-
   describe "Hashes" do
     it "#hset / #hget" do
       redis.del("myhash")

@@ -39,3 +39,17 @@ def array2hash(args : Array(String))
   end
   return hash
 end
+
+module TestRedisPool
+  CLIENTS = [] of Redis::Cluster::Client
+end
+
+protected def redis_cluster_client
+  TestRedisPool::CLIENTS.first {
+    info = load_cluster_info("nodes/m1-6379.nodes")
+    r = Redis::Cluster.new(info)
+    r.flushall
+    TestRedisPool::CLIENTS << r
+    r
+  }
+end
