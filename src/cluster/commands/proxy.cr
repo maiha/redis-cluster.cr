@@ -1,14 +1,26 @@
 module Redis::Cluster::Commands
-  # Generic
-  proxy del, key
-  # [aggregation] proxy del, *keys
+  # Keys
+  proxy del, key, *keys
+  proxy dump, key
+  proxy exists, key
+  proxy expire, key, seconds
+  proxy expireat, key, timestamp
+  # [aggregation] keys, pattern
+  proxy pexpire, key, millis
+  proxy pexpireat, key, unix_date_in_millis
+  proxy persist, key
+  proxy pttl, key
+  proxy rename, key, new_key
+  proxy renamenx, key, new_key
+  # [custom] randomkey
+  proxy ttl, key
+  proxy type, key
   
   # Strings
   proxy get, key
   proxy set, key, val
 
   # Sets
-  proxy set, key, value, ex = nil, px = nil, nx = nil, xx = nil
   proxy setex, key, expire_in_seconds, value
   proxy setnx, key, value
   proxy strlen, key

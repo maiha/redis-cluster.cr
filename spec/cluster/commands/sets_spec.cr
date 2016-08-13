@@ -1,10 +1,6 @@
 require "./spec_helper"
 
 describe "Commands" do
-  info = load_cluster_info("nodes/m1-6379.nodes")
-  redis = Redis::Cluster.new(info)
-  redis.flushall
-
   describe "Sets" do
     it "#sadd / #smembers" do
       redis.del("myset")

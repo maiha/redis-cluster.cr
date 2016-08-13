@@ -35,10 +35,15 @@ cluster.close
 
 ## Supported API
 
+#### v0.5.0
+
+- [ ] Commands : Lists
+
 #### v0.4.0
 
-- [ ] Commands : Sets
-- [ ] Commands : Hashes
+- [x] Commands : Keys (excepts: MIGRATE, MOVE, OBJECT, RESTORE, SORT, WAIT, SCAN)
+- [x] Commands : Sets
+- [x] Commands : Hashes
 
 #### v0.3.0
 

@@ -1,12 +1,22 @@
 module Redis::Cluster::Commands
 
   ######################################################################
-  ### Generic
+  ### Keys
 
-  def del(*keys)
-    keys.each do |key|
-      del(key)
+  def keys(pattern)
+    array = [] of String
+    nodes.each do |n|
+      array += redis(n.addr).keys(pattern)
     end
+    return array
+  end
+
+  def randomkey
+    nodes.select(&.master?).each{|n|
+      key = redis(n.addr).randomkey
+      return key if key
+    }
+    return nil
   end
 
   ######################################################################
