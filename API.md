@@ -177,31 +177,31 @@
 |`sunion`     |  ✓ |  ✓ |    |
 |`sunionstore`|  ✓ |  ✓ |    |
 
-### Sorted Set (0 / 21)
+### Sorted Set (21 / 21)
 
 |Command           |impl|test|note|
 |------------------|:--:|:--:|----|
-|`zadd`            |    |    |    |
-|`zcard`           |    |    |    |
-|`zcount`          |    |    |    |
-|`zincrby`         |    |    |    |
-|`zinterstore`     |    |    |    |
-|`zlexcount`       |    |    |    |
-|`zrange`          |    |    |    |
-|`zrangebylex`     |    |    |    |
-|`zrangebyscore`   |    |    |    |
-|`zrank`           |    |    |    |
-|`zrem`            |    |    |    |
-|`zremrangebylex`  |    |    |    |
-|`zremrangebyrank` |    |    |    |
-|`zremrangebyscore`|    |    |    |
-|`zrevrange`       |    |    |    |
-|`zrevrangebylex`  |    |    |    |
-|`zrevrangebyscore`|    |    |    |
-|`zrevrank`        |    |    |    |
-|`zscan`           |    |    |    |
-|`zscore`          |    |    |    |
-|`zunionstore`     |    |    |    |
+|`zadd`            |  ✓ |  ✓ |    |
+|`zcard`           |  ✓ |  ✓ |    |
+|`zcount`          |  ✓ |  ✓ |    |
+|`zincrby`         |  ✓ |  ✓ |    |
+|`zinterstore`     |  ✓ |  ✓ |    |
+|`zlexcount`       |  ✓ |  ✓ |    |
+|`zrange`          |  ✓ |  ✓ |    |
+|`zrangebylex`     |  ✓ |  ✓ |    |
+|`zrangebyscore`   |  ✓ |  ✓ |    |
+|`zrank`           |  ✓ |  ✓ |    |
+|`zrem`            |  ✓ |  ✓ |    |
+|`zremrangebylex`  |  ✓ |  ✓ |    |
+|`zremrangebyrank` |  ✓ |  ✓ |    |
+|`zremrangebyscore`|  ✓ |  ✓ |    |
+|`zrevrange`       |  ✓ |  ✓ |    |
+|`zrevrangebylex`  |  ✓ |  ✓ |    |
+|`zrevrangebyscore`|  ✓ |  ✓ |    |
+|`zrevrank`        |  ✓ |  ✓ |    |
+|`zscan`           |  ✓ |  ✓ |    |
+|`zscore`          |  ✓ |  ✓ |    |
+|`zunionstore`     |  ✓ |  ✓ |    |
 
 ### String (23 / 24)
 

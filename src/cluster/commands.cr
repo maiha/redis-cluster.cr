@@ -28,7 +28,7 @@ module Redis::Cluster::Commands
   #     redis(key.to_s).set(key, value, ex: ex, px: px, nx: nx, xx: xx)
   #   end
   macro proxy(name, *args)
-    {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a}.join(", ").id %}
+    {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a.is_a?(TypeDeclaration) ? a.var : a}.join(", ").id %}
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(", ").id }})
       redis(key.to_s).{{ invoke }}

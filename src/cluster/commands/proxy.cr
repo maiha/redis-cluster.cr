@@ -98,4 +98,28 @@ module Redis::Cluster::Commands
   proxy hscan, key, cursor, match = nil, count = nil
   proxy hsetnx, key, field, value
   proxy hvals, key
+
+  # Sorted Sets
+  proxy zadd, key, *scores_and_members
+  proxy zadd, key, scores_and_members : Array(RedisValue)
+  proxy zrange, key, start, stop, with_scores = false
+  proxy zcard, key
+  proxy zscore, key, member
+  proxy zcount, key, min, max
+  proxy zlexcount, key, min, max
+  proxy zincrby, key, increment, member
+  proxy zrem, key, member
+  proxy zrank, key, member
+  proxy zrevrank, key, member
+  proxy zinterstore, key, keys : Array, weights = nil, aggregate = nil
+  proxy zunionstore, key, keys : Array, weights = nil, aggregate = nil
+  proxy zrangebylex, key, min, max, limit = nil
+  proxy zrangebyscore, key, min, max, limit = nil, with_scores = false
+  proxy zrevrange, key, start, stop, with_scores = false
+  proxy zrevrangebylex, key, min, max, limit = nil
+  proxy zrevrangebyscore, key, min, max, limit = nil, with_scores = false
+  proxy zremrangebylex, key, min, max
+  proxy zremrangebyrank, key, start, stop
+  proxy zremrangebyscore, key, start, stop
+  proxy zscan, key, cursor, match = nil, count = nil
 end
