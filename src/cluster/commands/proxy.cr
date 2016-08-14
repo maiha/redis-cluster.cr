@@ -34,8 +34,7 @@ module Redis::Cluster::Commands
   proxy_ary blpop, keys, timeout_in_seconds
   proxy_ary brpop, keys, timeout_in_seconds
   proxy rpoplpush, key, destination
-  proxy brpoplpush, key, destination
-  proxy brpoplpush, key, destination, timeout_in_seconds
+  proxy brpoplpush, key, destination, timeout_in_seconds = nil
   
   # Strings
   proxy get, key
@@ -79,11 +78,8 @@ module Redis::Cluster::Commands
   proxy smove, key, destination, member
   proxy spop, key
   proxy spop, key, count
-  proxy srandmember, key
-  proxy srandmember, key, count
-  proxy sscan, key, cursor
-  proxy sscan, key, cursor, match
-  proxy sscan, key, cursor, match, count
+  proxy srandmember, key, count = nil
+  proxy sscan, key, cursor, match = nil, count = nil
   proxy sunion, key, *keys
   proxy sunionstore, key, *keys
 
@@ -99,9 +95,7 @@ module Redis::Cluster::Commands
   proxy hlen, key
   proxy hmget, key, *fields
   proxy hmset, key, hash
-  proxy hscan, key, cursor
-  proxy hscan, key, cursor, match
-  proxy hscan, key, cursor, match, count
+  proxy hscan, key, cursor, match = nil, count = nil
   proxy hsetnx, key, field, value
   proxy hvals, key
 end
