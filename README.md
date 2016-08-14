@@ -34,10 +34,14 @@ cluster.counts.values     # => [0, 0, 1]
 cluster.close
 ```
 
+#### methods
+
+See [crystal-redis](https://github.com/stefanwille/crystal-redis) because most of all methods are thin proxy to it.
+
 
 ## Supported API
 
-see [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
+See [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 
 
 ## TODO
