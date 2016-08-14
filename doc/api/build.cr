@@ -1,9 +1,9 @@
 # coding: utf-8
 
-list = File.read_lines("#{__DIR__}/api.list").map(&.chomp)
-impl = File.read_lines("#{__DIR__}/api.impl").map(&.chomp)
-test = File.read_lines("#{__DIR__}/api.test").map(&.chomp)
-note = File.read("#{__DIR__}/api.note")
+list = File.read_lines("#{__DIR__}/list").map(&.chomp)
+impl = File.read_lines("#{__DIR__}/impl").map(&.chomp)
+test = File.read_lines("#{__DIR__}/test").map(&.chomp)
+note = File.read("#{__DIR__}/note")
 
 group = nil
 items = [] of String
@@ -29,7 +29,8 @@ flush = ->(g : String?) {
   max = items.map(&.size).max + 2
   all = count.call(g)
   ok  = items.count{|i| impl.includes?(i)}
-  puts "### #{g.capitalize} (#{ok} / #{all})"
+  cat = g.split("_").map(&.capitalize).join(" ")
+  puts "### #{cat} (#{ok} / #{all})"
   puts ""
   puts "|%-#{max}s|impl|test|note|" % "Command"
   puts "|%s|:--:|:--:|----|" % ("-" * max)

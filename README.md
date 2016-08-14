@@ -25,6 +25,7 @@ require "redis-cluster"
 
 bootstrap = "127.0.0.1:7001,127.0.0.1:7002"
 cluster = Redis::Cluster.new(bootstrap)
+# cluster = Redis::Cluster.new(bootstrap, password)
 
 cluster.set "foo", "123"
 cluster.get "foo"         # => "123"
@@ -40,6 +41,10 @@ see [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 
 
 ## TODO
+
+#### v0.6.0
+
+- [ ] Commands : Transactions
 
 #### v0.5.0
 

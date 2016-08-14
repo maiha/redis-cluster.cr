@@ -177,7 +177,7 @@
 |`sunion`     |  ✓ |  ✓ |    |
 |`sunionstore`|  ✓ |  ✓ |    |
 
-### Sorted_set (0 / 21)
+### Sorted Set (0 / 21)
 
 |Command           |impl|test|note|
 |------------------|:--:|:--:|----|
