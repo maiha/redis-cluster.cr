@@ -45,5 +45,10 @@ describe "Commands" do
       redis.set("callmemaybe", 1)
       redis.keys("callmemaybe").should eq(["callmemaybe"])
     end
+
+    it "#type" do
+      redis.set("foo", 3)
+      redis.type("foo").should eq("string")
+    end
   end
 end

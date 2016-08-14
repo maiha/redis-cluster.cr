@@ -4,6 +4,7 @@ renamenx
 randomkey
 exists
 keys
+type
 sadd
 smembers
 scard
