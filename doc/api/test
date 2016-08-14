@@ -104,3 +104,6 @@ bitop
 bitpos
 setbit
 getbit
+pfadd
+pfcount
+pfmerge

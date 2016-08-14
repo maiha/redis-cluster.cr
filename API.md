@@ -68,13 +68,13 @@
 |`hstrlen`     |    |    |Available since 3.2.0.|
 |`hvals`       |  ✓ |  ✓ |    |
 
-### Hyperloglog (0 / 3)
+### Hyperloglog (3 / 3)
 
 |Command  |impl|test|note|
 |---------|:--:|:--:|----|
-|`pfadd`  |    |    |    |
-|`pfcount`|    |    |    |
-|`pfmerge`|    |    |    |
+|`pfadd`  |  ✓ |  ✓ |    |
+|`pfcount`|  ✓ |  ✓ |    |
+|`pfmerge`|  ✓ |  ✓ |    |
 
 ### List (17 / 17)
 

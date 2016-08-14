@@ -3,6 +3,9 @@ randomkey
 flushall
 counts
 info
+pfadd
+pfmerge
+pfcount
 del
 dump
 exists

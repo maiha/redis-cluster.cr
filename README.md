@@ -48,6 +48,7 @@ see [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 
 #### v0.5.0
 
+- [x] Commands : HyperLogLog
 - [x] Commands : Sorted Sets
 - [x] Commands : Strings
 - [x] Commands : Lists

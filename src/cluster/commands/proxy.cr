@@ -1,4 +1,9 @@
 module Redis::Cluster::Commands
+  # HyperLogLog
+  proxy pfadd, key, *values
+  proxy pfmerge, key, *keys
+  proxy pfcount, key, *keys
+
   # Keys
   proxy del, key, *keys
   proxy dump, key
