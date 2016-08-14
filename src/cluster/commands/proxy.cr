@@ -39,8 +39,27 @@ module Redis::Cluster::Commands
   
   # Strings
   proxy get, key
-  proxy set, key, val
-
+  proxy set, key, value, ex = nil, px = nil, nx = nil, xx = nil
+  proxy mget, key, *keys
+  proxy_hash mset, hash
+  proxy getset, key, value
+  proxy psetex, key, expire_in_milis, value
+  proxy_hash msetnx, hash
+  proxy incr, key
+  proxy decr, key
+  proxy incrby, key, increment
+  proxy incrbyfloat, key, increment
+  proxy decrby, key, decrement
+  proxy append, key, value
+  proxy strlen, key
+  proxy getrange, key, start_index, end_index
+  proxy setrange, key, start_index, value
+  proxy bitcount, key, from = nil, to = nil
+  proxy bitop, operation, key, *keys
+  proxy getbit, key, index
+  proxy setbit, key, index, value
+  proxy bitpos, key, bit, start = nil, to = nil
+  
   # Sets
   proxy setex, key, expire_in_seconds, value
   proxy setnx, key, value

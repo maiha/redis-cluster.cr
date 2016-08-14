@@ -203,34 +203,34 @@
 |`zscore`          |    |    |    |
 |`zunionstore`     |    |    |    |
 
-### String (7 / 24)
+### String (23 / 24)
 
 |Command      |impl|test|note|
 |-------------|:--:|:--:|----|
-|`append`     |    |    |    |
-|`bitcount`   |    |    |    |
-|`bitfield`   |    |    |    |
-|`bitop`      |    |    |    |
-|`bitpos`     |    |    |    |
-|`decr`       |    |    |    |
-|`decrby`     |    |    |    |
-|`get`        |  ✓ |    |    |
-|`getbit`     |    |    |    |
-|`getrange`   |    |    |    |
-|`getset`     |    |    |    |
-|`incr`       |    |    |    |
-|`incrby`     |    |    |    |
-|`incrbyfloat`|    |    |    |
-|`mget`       |    |    |    |
-|`mset`       |    |    |    |
-|`msetnx`     |    |    |    |
-|`psetex`     |    |    |    |
-|`set`        |  ✓ |    |    |
-|`setbit`     |  ✓ |    |    |
-|`setex`      |  ✓ |    |    |
-|`setnx`      |  ✓ |    |    |
-|`setrange`   |  ✓ |    |    |
-|`strlen`     |  ✓ |    |    |
+|`append`     |  ✓ |  ✓ |    |
+|`bitcount`   |  ✓ |  ✓ |    |
+|`bitfield`   |    |    |Available since 3.2.0.|
+|`bitop`      |  ✓ |  ✓ |    |
+|`bitpos`     |  ✓ |  ✓ |    |
+|`decr`       |  ✓ |  ✓ |    |
+|`decrby`     |  ✓ |  ✓ |    |
+|`get`        |  ✓ |  ✓ |    |
+|`getbit`     |  ✓ |  ✓ |    |
+|`getrange`   |  ✓ |  ✓ |    |
+|`getset`     |  ✓ |  ✓ |    |
+|`incr`       |  ✓ |  ✓ |    |
+|`incrby`     |  ✓ |  ✓ |    |
+|`incrbyfloat`|  ✓ |  ✓ |    |
+|`mget`       |  ✓ |  ✓ |    |
+|`mset`       |  ✓ |  ✓ |    |
+|`msetnx`     |  ✓ |  ✓ |    |
+|`psetex`     |  ✓ |  ✓ |    |
+|`set`        |  ✓ |  ✓ |    |
+|`setbit`     |  ✓ |  ✓ |    |
+|`setex`      |  ✓ |  ✓ |    |
+|`setnx`      |  ✓ |  ✓ |    |
+|`setrange`   |  ✓ |  ✓ |    |
+|`strlen`     |  ✓ |  ✓ |    |
 
 ### Transactions (0 / 5)
 
