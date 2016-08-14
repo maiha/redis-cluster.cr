@@ -44,7 +44,7 @@ see [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 #### v0.5.0
 
 - [ ] Commands : Sorted Sets
-- [ ] Commands : Strings
+- [x] Commands : Strings
 - [x] Commands : Lists
 
 
