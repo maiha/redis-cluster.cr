@@ -1,18 +1,6 @@
 module Redis::Cluster::Commands
   abstract def redis(key : String) : Redis
 
-  # [proxy] macro
-  # "proxy get, key" generates
-  #
-  # def get(key)
-  #   redis(key).get(key)
-  # rescue moved : Redis::Error::Moved
-  #   on_moved(moved)
-  #   redis(key).get(key)
-  # rescue ask : Redis::Error::Ask
-  #   redis(Addr.parse(ask.to)).get(key)
-  # end
-
   # `proxy` macro
   # [input]
   #   proxy set, key, value, ex = nil, px = nil, nx = nil, xx = nil
@@ -42,11 +30,32 @@ module Redis::Cluster::Commands
     end
   end
 
+  # treat the 1st arg as the key
   macro proxy_ary(name, *args)
     {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a}.join(", ").id %}
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(",").id }})
       key = {{args.first}}.first { raise "{{name}}: key not found" }
+      begin
+        redis(key.to_s).{{ invoke }}
+      rescue moved : Redis::Error::Moved
+        on_moved(moved)
+        redis(key.to_s).{{ invoke }}
+      rescue ask : Redis::Error::Ask
+        redis(Addr.parse(ask.to)).{{ invoke }}
+      rescue err : Errno
+        redis(key.to_s).{{ invoke }}
+      end
+    end
+  end
+
+  # treat the 2nd arg as the key
+  macro proxy_ary2(name, args)
+    {% invoke = "#{name}(#{args.id})".id %}
+
+    def {{ name.id }}({{ args.id }})
+      raise "{{name}}: key not found" if {{args.id}}.size < 2
+      key = {{args.id}}[1]
       begin
         redis(key.to_s).{{ invoke }}
       rescue moved : Redis::Error::Moved
