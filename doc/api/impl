@@ -113,3 +113,4 @@ zremrangebylex
 zremrangebyrank
 zremrangebyscore
 zscan
+raw

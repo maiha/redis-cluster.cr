@@ -127,4 +127,7 @@ module Redis::Cluster::Commands
   proxy zremrangebyrank, key, start, stop
   proxy zremrangebyscore, key, start, stop
   proxy zscan, key, cursor, match = nil, count = nil
+
+  # Original
+  proxy raw, key, *args
 end
