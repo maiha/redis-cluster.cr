@@ -114,3 +114,4 @@ zremrangebyrank
 zremrangebyscore
 zscan
 command
+self
