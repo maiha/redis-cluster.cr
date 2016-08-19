@@ -81,6 +81,7 @@ zremrangebyrank
 zremrangebyscore
 zinterstore
 zunionstore
+command
 set
 get
 set

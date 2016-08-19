@@ -121,7 +121,7 @@
 |`script kill`  |    |    |    |
 |`script load`  |    |    |    |
 
-### Server (2 / 31)
+### Server (3 / 31)
 
 |Command           |impl|test|note|
 |------------------|:--:|:--:|----|
@@ -133,7 +133,7 @@
 |`client pause`    |    |    |    |
 |`client reply`    |    |    |    |
 |`client setname`  |    |    |    |
-|`command`         |    |    |    |
+|`command`         |  ✓ |  ✓ |    |
 |`command count`   |    |    |    |
 |`command getkeys` |    |    |    |
 |`command info`    |    |    |    |

@@ -129,5 +129,5 @@ module Redis::Cluster::Commands
   proxy zscan, key, cursor, match = nil, count = nil
 
   # Original
-  proxy_ary2 raw, args
+  proxy_ary2 command, args
 end
