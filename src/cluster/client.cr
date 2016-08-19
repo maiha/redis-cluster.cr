@@ -3,6 +3,7 @@ require "./pool"
 
 class Redis::Cluster::Client
   delegate nodes, to: cluster_info
+  getter password
 
   def initialize(bootstrap : String, @password : String? = nil)
     @slot2addr  = Hash(Int32, Addr).new
