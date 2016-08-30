@@ -1,8 +1,3 @@
-keys
-randomkey
-flushall
-counts
-info
 pfadd
 pfmerge
 pfcount
@@ -114,4 +109,9 @@ zremrangebyrank
 zremrangebyscore
 zscan
 command
+keys
+randomkey
+flushall
+counts
+info
 self

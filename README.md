@@ -43,20 +43,27 @@ See [crystal-redis](https://github.com/stefanwille/crystal-redis) because most o
 
 See [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 
+## Redis::Client
+
+#### Feature
+
+- automatically creates standard client or clusterd client
+- automatically reconnect to redis after connection errors
+
+```crystal
+redis = Redis::Client.new(host: "127.0.0.1", port: 6379, password: nil)
+```
 
 ## TODO
 
-#### v0.6.0
+#### v0.7.0
 
 - [ ] Commands : Transactions
 
-#### v0.5.0
+#### v0.6.0
 
-- [x] Commands : HyperLogLog
-- [x] Commands : Sorted Sets
-- [x] Commands : Strings
-- [x] Commands : Lists
-
+- [x] Redis::Client for hybrid connection
+- [x] Reconnect Automatically
 
 ## Contributing
 
