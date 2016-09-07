@@ -27,12 +27,12 @@ struct Redis::Cluster::NodeInfo
     
     return Redis::Cluster::NodeInfo.new(sha1: sha1, addr: addr, flags: flags, master: master, sent: sent.to_i64, recv: recv.to_i64, epoch: epoch.to_i64, status: status, slot: slot)
   end
-end
 
-def Array(Redis::Cluster::NodeInfo).parse(buf : String) : Array(Redis::Cluster::NodeInfo)
-  nodes = [] of Redis::Cluster::NodeInfo
-  buf.each_line do |line|
-    nodes << Redis::Cluster::NodeInfo.parse(line.chomp)
+  def self.array_parse(buf : String) : Array(Redis::Cluster::NodeInfo)
+    nodes = [] of Redis::Cluster::NodeInfo
+    buf.each_line do |line|
+      nodes << Redis::Cluster::NodeInfo.parse(line.chomp)
+    end
+    return nodes.sort_by(&.addr)
   end
-  return nodes.sort_by(&.addr)
 end
