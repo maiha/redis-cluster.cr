@@ -1,3 +1,5 @@
 language: crystal
 services:
   - redis-server
+script:
+  - make test
