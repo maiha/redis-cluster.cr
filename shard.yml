@@ -1,10 +1,10 @@
 name: redis-cluster
-version: 0.6.0
+version: 0.6.1
 
 dependencies:
   redis:
     github: stefanwille/crystal-redis
-    version: ~> 1.6.6
+    version: 1.6.7
   crc16:
     github: maiha/crc16.cr
     version: 0.1.0
