@@ -2,6 +2,8 @@
 class Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
+  getter host, port, password
+  
   def initialize(uri : String)
     b = Redis::Cluster::Bootstrap.parse(uri)
     initialize(host: b.host, port: b.port, password: b.pass)
