@@ -20,6 +20,15 @@ module Redis::Cluster::Commands
   end
 
   ######################################################################
+  ### Connection
+
+  # This is not clustered command. Just send to first node
+  def ping
+    # crc16("3B8") -> 0
+    redis("3B8").ping
+  end
+
+  ######################################################################
   ### Server
 
   def flushall
@@ -58,6 +67,13 @@ module Redis::Cluster::Commands
       rescue err
         hash[node] = [err.to_s.as(InfoExtractor::Value)]
       end
+      hash
+    end
+  end
+
+  def raw_info
+    nodes.reduce(Hash(NodeInfo, Hash(String, String)).new) do |hash, node|
+      hash[node] = redis(node.addr).info
       hash
     end
   end

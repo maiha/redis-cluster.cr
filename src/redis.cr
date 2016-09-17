@@ -17,6 +17,18 @@ class ::Redis::Client
     @redis.is_a?(::Redis::Cluster::Client)
   end
   
+  def cluster
+    @redis.as(::Redis::Cluster::Client)
+  end
+  
+  def standard?
+    @redis.is_a?(::Redis)
+  end
+  
+  def standard
+    @redis.as(::Redis)
+  end
+  
   protected def reconnect?(err : Exception)
     case err
     when Errno

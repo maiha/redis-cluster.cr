@@ -1,12 +1,12 @@
 # redis-cluster.cr 
 ## Supported API
-### Connection (0 / 5)
+### Connection (1 / 5)
 
 |Command |impl|test|note|
 |--------|:--:|:--:|----|
 |`auth`  |    |    |    |
 |`echo`  |    |    |    |
-|`ping`  |    |    |    |
+|`ping`  |  ✓ |    |    |
 |`quit`  |    |    |    |
 |`select`|    |    |    |
 
