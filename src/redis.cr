@@ -1,11 +1,12 @@
 # Hybrid client for standard or clustered
-class Redis::Client
+class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
   getter host, port, password
+  getter! redis
   
   def initialize(uri : String)
-    b = Redis::Cluster::Bootstrap.parse(uri)
+    b = ::Redis::Cluster::Bootstrap.parse(uri)
     initialize(host: b.host, port: b.port, password: b.pass)
   end
 
@@ -45,7 +46,7 @@ class Redis::Client
 
     begin
       redis.command(["cluster", "myid"])
-    rescue e : Redis::Error
+    rescue e : ::Redis::Error
       if /This instance has cluster support disabled/ === e.message
         return redis
       else
