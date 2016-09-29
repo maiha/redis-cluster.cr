@@ -47,7 +47,7 @@ module Redis::Cluster::Commands
   ### Strings
 
   ######################################################################
-  ### Misc
+  ### Aggregate
 
   # **Return value**: -1 when redis level error
   def counts : Counts

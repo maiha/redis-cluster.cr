@@ -71,6 +71,17 @@ describe Redis::Cluster::ClusterInfo do
     slaves.map(&.port).should eq([7003])
   end
 
+  it "#slaves_of" do
+    # [master]       [slaves]
+    # 127.0.0.1:7001 127.0.0.1:7003
+    # 127.0.0.1:7002
+    n1 = info.find_node_by!(":7001")
+    n2 = info.find_node_by!(":7002")
+    n3 = info.find_node_by!(":7003")
+    info.slaves_of(n1).should eq([n3])
+    info.slaves_of(n2).should eq(Array(NodeInfo).new)
+  end
+
   it "#open_slots" do
     info.open_slots.should eq((9991..9999).to_a)
   end

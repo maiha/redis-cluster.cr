@@ -24,6 +24,18 @@ class Redis::Cluster::ClusterInfo
     slave_deps.values.flatten
   end
 
+  # Get slave nodes of the master
+  #
+  # **Return value**:
+  # * slave nodes are returned when master is found
+  # * empty array is returned if the master not found
+  def slaves_of(master) : Array(NodeInfo)
+    each_serving_masters_with_slaves do |m, slaves|
+      return slaves if m == master
+    end
+    return Array(NodeInfo).new
+  end
+
   def serving_masters : Array(NodeInfo)
     nodes.select(&.serving?).sort_by(&.first_slot)
   end
