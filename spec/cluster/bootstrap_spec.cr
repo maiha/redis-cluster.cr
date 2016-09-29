@@ -1,7 +1,7 @@
 require "./spec_helper"
 
-private def bootstrap(host, port, pass = nil)
-  Redis::Cluster::Bootstrap.new(host, port, pass)
+private def bootstrap(host = nil, port = nil, sock = nil, pass = nil)
+  Redis::Cluster::Bootstrap.new(host, port, sock, pass)
 end
 
 private def parse(string) : Redis::Cluster::Bootstrap
@@ -36,29 +36,37 @@ describe Redis::Cluster::Bootstrap do
     end
 
     it "should build default setting from empty string" do
-      parse("").should eq(bootstrap("127.0.0.1", 6379, nil))
+      parse("").should eq(bootstrap("127.0.0.1", 6379))
     end
 
     it "should accept uri with protocol" do
-      parse("redis://a@host:1").should eq(bootstrap("host"     , 1   , "a"))
-      parse("redis://a@host:1").should eq(bootstrap("host"     , 1   , "a"))
-      parse("redis://a@host"  ).should eq(bootstrap("host"     , 6379, "a"))
-      parse("redis://a@:1"    ).should eq(bootstrap("127.0.0.1", 1   , "a"))
-      parse("redis://host:1"  ).should eq(bootstrap("host"     , 1   , nil))
-      parse("redis://host"    ).should eq(bootstrap("host"     , 6379, nil))
-      parse("redis://a@"      ).should eq(bootstrap("127.0.0.1", 6379, "a"))
-      parse("redis://:1"      ).should eq(bootstrap("127.0.0.1", 1   , nil))
+      # host, port
+      parse("redis://a@host:1").should eq(bootstrap("host"     , 1   , pass: "a"))
+      parse("redis://a@host:1").should eq(bootstrap("host"     , 1   , pass: "a"))
+      parse("redis://a@host"  ).should eq(bootstrap("host"     , 6379, pass: "a"))
+      parse("redis://a@:1"    ).should eq(bootstrap("127.0.0.1", 1   , pass: "a"))
+      parse("redis://host:1"  ).should eq(bootstrap("host"     , 1   , pass: nil))
+      parse("redis://host"    ).should eq(bootstrap("host"     , 6379, pass: nil))
+      parse("redis://a@"      ).should eq(bootstrap("127.0.0.1", 6379, pass: "a"))
+      parse("redis://:1"      ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
+      # sock
+      parse("redis:///tmp/s"  ).should eq(bootstrap(sock: "/tmp/s"))
+      parse("redis://a@/tmp/s").should eq(bootstrap(sock: "/tmp/s", pass: "a"))
     end
 
     it "should accept uri without protocol" do
-      parse("a@host:1").should eq(bootstrap("host"     , 1   , "a"))
-      parse("a@host:1").should eq(bootstrap("host"     , 1   , "a"))
-      parse("a@host"  ).should eq(bootstrap("host"     , 6379, "a"))
-      parse("a@:1"    ).should eq(bootstrap("127.0.0.1", 1   , "a"))
-      parse("host:1"  ).should eq(bootstrap("host"     , 1   , nil))
-      parse("host"    ).should eq(bootstrap("host"     , 6379, nil))
-      parse("a@"      ).should eq(bootstrap("127.0.0.1", 6379, "a"))
-      parse(":1"      ).should eq(bootstrap("127.0.0.1", 1   , nil))
+      # host, port
+      parse("a@host:1").should eq(bootstrap("host"     , 1   , pass: "a"))
+      parse("a@host:1").should eq(bootstrap("host"     , 1   , pass: "a"))
+      parse("a@host"  ).should eq(bootstrap("host"     , 6379, pass: "a"))
+      parse("a@:1"    ).should eq(bootstrap("127.0.0.1", 1   , pass: "a"))
+      parse("host:1"  ).should eq(bootstrap("host"     , 1   , pass: nil))
+      parse("host"    ).should eq(bootstrap("host"     , 6379, pass: nil))
+      parse("a@"      ).should eq(bootstrap("127.0.0.1", 6379, pass: "a"))
+      parse(":1"      ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
+      # sock
+      parse("/tmp/s"  ).should eq(bootstrap(sock: "/tmp/s"))
+      parse("a@/tmp/s").should eq(bootstrap(sock: "/tmp/s", pass: "a"))
     end
 
     it "should raise when port part is not number nor positive" do
