@@ -9,6 +9,10 @@ module Redis::Cluster::Pool
     redis(addr(key))
   end
 
+  def redis(node : NodeInfo)
+    redis(node.addr)
+  end
+
   def each
     cluster_info.nodes.each do |n|
       yield redis(n)
