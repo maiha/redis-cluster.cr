@@ -59,9 +59,11 @@ module Redis::Cluster::Commands
     pfadd
     pfcount
     pfmerge
+    ping
     psetex
     pttl
     randomkey
+    raw_info
     rename
     renamenx
     rpop

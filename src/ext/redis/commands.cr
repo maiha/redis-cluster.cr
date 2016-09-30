@@ -2,6 +2,10 @@ require "redis"
 
 class Redis
   module Commands
+    def myid
+      string_command(["CLUSTER", "MYID"])
+    end
+    
     def nodes
       string_command(["CLUSTER", "NODES"])
     end
