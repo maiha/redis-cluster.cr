@@ -19,8 +19,8 @@ module Redis::Cluster
       !! @sock
     end
          
-    def copy(host : String? = nil, port : Int32? = nil, pass : String? = nil)
-      Bootstrap.new(host: host||@host, port: port||@port, pass: pass||@pass)
+    def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil)
+      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||@pass)
     end
 
     def redis

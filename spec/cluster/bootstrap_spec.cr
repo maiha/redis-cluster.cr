@@ -89,4 +89,84 @@ describe Redis::Cluster::Bootstrap do
       end
     end
   end
+
+  describe "#copy" do
+    a = bootstrap("a",1,"/tmp/s","SECRET")
+    it "update host" do
+      b = a.copy(host: "b")
+      a.host.should eq("a")
+      b.host.should eq("b")
+
+      # by nil
+      b = a.copy(host: nil)
+      a.host.should eq("a")
+      b.host.should eq("a")
+    end
+
+    it "update port" do
+      b = a.copy(port: 2)
+      a.port.should eq(1)
+      b.port.should eq(2)
+
+      # by nil
+      b = a.copy(port: nil)
+      a.port.should eq(1)
+      b.port.should eq(1)
+    end
+
+    it "update sock" do
+      b = a.copy(sock: "/tmp/b")
+      a.sock.should eq("/tmp/s")
+      b.sock.should eq("/tmp/b")
+
+      # by nil
+      b = a.copy(sock: nil)
+      a.sock.should eq("/tmp/s")
+      b.sock.should eq("/tmp/s")
+    end
+
+    it "update pass" do
+      b = a.copy(pass: "PASS")
+      a.pass.should eq("SECRET")
+      b.pass.should eq("PASS")
+
+      # by nil
+      b = a.copy(pass: nil)
+      a.pass.should eq("SECRET")
+      b.pass.should eq("SECRET")
+    end
+
+    it "update multiple keys at once" do
+      b = a.copy(host: "b", sock: "/tmp/b", pass: nil)
+      b.host.should eq("b")
+      b.port.should eq(a.port)
+      b.sock.should eq("/tmp/b")
+      b.pass.should eq(a.pass)
+    end
+  end
+
+  describe "#redis" do
+    it "should create redis connection" do
+      b = Bootstrap.new(port: 6379)  # available in TravisCI
+      b.redis.close # should work
+    end
+
+    it "should raise when redis is down" do
+      b = Bootstrap.new(port: 6380)  # when redis is down
+      expect_raises(Errno, /127.0.0.1:6380/) do
+        b.redis
+      end
+    end
+
+    it "should respect unixsocket parameter" do
+      b = Bootstrap.new(sock: "/tmp/xxx.sock")
+
+      # here, the error message depends on Crystal implementation (UNIXSocket#initialize)
+      expect_raises(Errno, /xxx.sock': No such file or directory/) do
+        b.redis
+      end
+
+      # Although we can't test to connect by socket itself, we can ensure the value will be used.
+    end
+  end
 end
