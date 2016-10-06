@@ -2,15 +2,20 @@
 class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
-  getter host, port, password
+  delegate host, port, unixsocket, password, to: @bootstrap
   getter! redis
+  getter bootstrap
   
   def initialize(uri : String)
     b = ::Redis::Cluster::Bootstrap.parse(uri)
     initialize(host: b.host, port: b.port, password: b.pass)
   end
 
-  def initialize(@host : String, @port : Int32, @password : String? = nil)
+  def initialize(@bootstrap : ::Redis::Cluster::Bootstrap)
+  end
+
+  def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil)
+    initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password))
   end
 
   def cluster?
@@ -54,7 +59,7 @@ class ::Redis::Client
 
   # Return a Cluster Connection or Standard Connection
   private def connect!
-    redis = ::Redis.new(@host, @port, password: @password)
+    redis = bootstrap.redis
 
     begin
       redis.command(["cluster", "myid"])
@@ -67,6 +72,6 @@ class ::Redis::Client
       end
     end
 
-    return ::Redis::Cluster.new("#{@host}:#{@port}", password: @password)
+    return ::Redis::Cluster.new(bootstrap)
   end
 end

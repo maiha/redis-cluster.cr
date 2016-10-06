@@ -9,6 +9,12 @@ private def parse(string) : Redis::Cluster::Bootstrap
 end
 
 describe Redis::Cluster::Bootstrap do
+  describe "#host" do
+    it "should return host if specified" do
+      bootstrap(host: "127.0.0.1").host.should eq("127.0.0.1")
+    end
+  end
+
   describe "#to_s" do
     it "should normalize uri" do
       bootstrap.to_s.should eq("redis://127.0.0.1:6379")
