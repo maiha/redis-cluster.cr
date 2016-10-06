@@ -44,10 +44,15 @@ module TestRedisPool
   CLIENTS = [] of Redis::Cluster::Client
 end
 
+protected def new_redis_cluster(info : Redis::Cluster::ClusterInfo)
+  bootstraps = info.nodes.map{|n| Redis::Cluster::Bootstrap.new(n.addr.to_s)}
+  Redis::Cluster::Client.new(bootstraps).tap(&.cluster_info = info)
+end
+
 protected def redis_cluster_client
   TestRedisPool::CLIENTS.first {
     info = load_cluster_info("nodes/m1-6379.nodes")
-    r = Redis::Cluster.new(info)
+    r = new_redis_cluster(info)
     r.flushall
     TestRedisPool::CLIENTS << r
     r

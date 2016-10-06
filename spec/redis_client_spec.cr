@@ -27,34 +27,6 @@ describe Redis::Client do
       client.unixsocket.should eq("/tmp/s")
       client.password.should eq("secret")
     end
-
-    it "build instance from bootstrap string" do
-      client = Redis::Client.new("127.0.0.1:6379")
-      client.host.should eq("127.0.0.1")
-      client.port.should eq(6379)
-      client.unixsocket.should eq(nil)
-      client.password.should eq(nil)
-
-      # with auth
-      client = Redis::Client.new("secret@127.0.0.1:6379")
-      client.host.should eq("127.0.0.1")
-      client.port.should eq(6379)
-      client.unixsocket.should eq(nil)
-      client.password.should eq("secret")
-    end
-
-    it "build instance from bootstrap string with unixsocket" do
-      client = Redis::Client.new(unixsocket: "/tmp/s")
-      # client.host.should ... # doesn't care
-      # client.port.should ... # doesn't care
-      client.unixsocket.should eq("/tmp/s")
-      client.password.should eq(nil)
-
-      # with auth
-      client = Redis::Client.new(unixsocket: "/tmp/s", password: "secret")
-      client.unixsocket.should eq("/tmp/s")
-      client.password.should eq("secret")
-    end
   end
 
   describe "#bootstrap" do

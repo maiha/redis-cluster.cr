@@ -25,7 +25,7 @@ require "redis-cluster"
 
 bootstrap = "127.0.0.1:7001,127.0.0.1:7002"
 cluster = Redis::Cluster.new(bootstrap)
-# cluster = Redis::Cluster.new(bootstrap, password)
+# cluster = Redis::Cluster.new(bootstrap, password: "secret")
 
 cluster.set "foo", "123"
 cluster.get "foo"         # => "123"

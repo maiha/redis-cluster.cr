@@ -1,6 +1,5 @@
 module Redis::Cluster
-  def self.load_info(bootstraps : Array(Bootstrap), pass = nil) : ClusterInfo
-    bootstraps = bootstraps.map(&.copy(pass: pass)) # merge password
+  def self.load_info(bootstraps : Array(Bootstrap)) : ClusterInfo
     errors = [] of Exception
     bootstraps.each do |bootstrap|
       redis = nil

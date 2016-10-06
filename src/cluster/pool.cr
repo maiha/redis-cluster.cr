@@ -2,7 +2,7 @@ module Redis::Cluster::Pool
   include Enumerable(Redis)     # for all redis connections
 
   def new_redis(host : String, port : Int32)
-    Redis.new(host: host, port: port, password: @password)
+    Redis.new(host: host, port: port, password: password)
   end
   
   def redis(key : String)

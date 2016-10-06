@@ -5,7 +5,7 @@ describe "redirection" do
   describe "MOVED" do
     it "should update slot mapping" do
       info = load_cluster_info("nodes/m1-6379.nodes")
-      cluster = Redis::Cluster.new(info)
+      cluster = new_redis_cluster(info)
       cluster.addr("3194").should eq(Redis::Cluster::Addr.new("127.0.0.1", 6379))
 
       # emulate redirection
@@ -19,7 +19,7 @@ describe "redirection" do
   describe "ASK" do
     it "should just proxy" do
       info = load_cluster_info("nodes/m1-6379.nodes")
-      cluster = Redis::Cluster.new(info)
+      cluster = new_redis_cluster(info)
       cluster.addr("3194").should eq(Redis::Cluster::Addr.new("127.0.0.1", 6379))
 
       pending "too hard to emulate ASK without cluster" do

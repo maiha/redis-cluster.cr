@@ -6,14 +6,10 @@ class ::Redis::Client
   getter! redis
   getter bootstrap
   
-  def initialize(uri : String)
-    b = ::Redis::Cluster::Bootstrap.parse(uri)
-    initialize(host: b.host, port: b.port, password: b.pass)
-  end
-
   def initialize(@bootstrap : ::Redis::Cluster::Bootstrap)
   end
 
+  # compats with `::Redis.new`
   def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil)
     initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password))
   end
