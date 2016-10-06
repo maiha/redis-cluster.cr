@@ -9,6 +9,27 @@ private def parse(string) : Redis::Cluster::Bootstrap
 end
 
 describe Redis::Cluster::Bootstrap do
+  describe "#to_s" do
+    it "should normalize uri" do
+      bootstrap.to_s.should eq("redis://127.0.0.1:6379")
+      bootstrap.to_s(secure: false).should eq("redis://127.0.0.1:6379")
+    end
+
+    it "should filter password in default" do
+      bootstrap(pass: "secret").to_s.should eq("redis://[FILTERED]@127.0.0.1:6379")
+    end
+
+    it "should show password with secure = false option" do
+      bootstrap(pass: "secret").to_s(secure: false).should eq("redis://secret@127.0.0.1:6379")
+    end
+
+    it "should works with sock" do
+      bootstrap(sock: "/tmp/s").to_s.should eq("redis:///tmp/s")
+      bootstrap(sock: "/tmp/s", pass: "secret").to_s.should eq("redis://[FILTERED]@/tmp/s")
+      bootstrap(sock: "/tmp/s", pass: "secret").to_s(secure: false).should eq("redis://secret@/tmp/s")
+    end
+  end
+
   describe "equality" do
     it "should test by value" do
       bootstrap("a",1).should eq(bootstrap("a",1))

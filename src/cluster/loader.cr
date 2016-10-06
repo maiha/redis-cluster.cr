@@ -1,10 +1,11 @@
 module Redis::Cluster
-  def self.load_info(addrs : Array(Addr), pass = nil) : ClusterInfo
+  def self.load_info(bootstraps : Array(Bootstrap), pass = nil) : ClusterInfo
+    bootstraps = bootstraps.map(&.copy(pass: pass)) # merge password
     errors = [] of Exception
-    addrs.each do |addr|
+    bootstraps.each do |bootstrap|
       redis = nil
       begin
-        redis = Redis.new(host: addr.host, port: addr.port, password: pass)
+        redis = bootstrap.redis
         return ClusterInfo.parse(redis.not_nil!.nodes)
       rescue err
         # #<Errno:0xd37a40 @message="Error connecting to '127.0.0.1:7001': Connection refused"
@@ -16,6 +17,6 @@ module Redis::Cluster
     if errors.any?
       raise errors.first.not_nil!
     end
-    raise "Redis not found: #{addrs.map(&.to_s).inspect}"
+    raise "Redis not found: #{bootstraps.map(&.to_s).inspect}"
   end
 end

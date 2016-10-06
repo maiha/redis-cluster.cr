@@ -27,6 +27,22 @@ module Redis::Cluster
       Redis.new(host: host, port: port, unixsocket: @sock, password: @pass)
     end
 
+    def to_s(secure = true)
+      auth = nil
+      auth = "#{pass}@" if pass
+      auth = "[FILTERED]@" if pass && secure
+
+      if sock?
+        "redis://%s%s" % [auth, sock]
+      else
+        "redis://%s%s:%s" % [auth, host, port]
+      end
+    end
+
+    def to_s(io : IO)
+      io << to_s
+    end
+    
     def self.zero
       new(host: Addr::DEFAULT_HOST, port: Addr::DEFAULT_PORT, pass: nil)
     end

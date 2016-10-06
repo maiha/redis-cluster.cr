@@ -1,12 +1,18 @@
 module Redis::Cluster
+  # current api
+  def self.new(bootstrap : Bootstrap) : Client
+    Client.new(bootstrap)
+  end
+
+  # [backward compats]
   def self.new(bootstrap : String, password : String? = nil) : Client
-    Client.new(bootstrap, password)
+    Client.new(Bootstrap.parse(bootstrap).copy(pass: password))
   end
 
   # for internal or testing purpose
   def self.new(info : ClusterInfo, password : String? = nil) : Client
-    bootstrap = info.nodes.map(&.addr).join(",")
-    Client.new(bootstrap, password).tap(&.cluster_info = info)
+    bootstraps = info.nodes.map{|n| Bootstrap.new(n.addr.to_s)}
+    Client.new(bootstraps, password).tap(&.cluster_info = info)
   end
 
   # Return a Cluster Connection or Standard Connection
