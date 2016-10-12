@@ -17,7 +17,10 @@ class Redis::Cluster::Client
   end
 
   def cluster_info
-    @cluster_info ||= Redis::Cluster.load_info(@bootstraps)
+    if @cluster_info.nil?
+      self.cluster_info = load_info
+    end
+      
     @cluster_info.not_nil!
   end
 
@@ -36,6 +39,10 @@ class Redis::Cluster::Client
 
   private def ready!
     cluster_info                # to initialize slots
+  end
+
+  private def load_info
+    Redis::Cluster.load_info(@bootstraps)
   end
 
   include Redis::Commands
