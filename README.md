@@ -2,7 +2,7 @@
 
 redis-cluster library for Crystal
 
-- tested on crystal-0.19.3
+- tested on crystal-0.19.4
 
 
 ## Installation
@@ -14,7 +14,6 @@ dependencies:
   redis-cluster:
     github: maiha/redis-cluster.cr
 ```
-
 
 ## Usage
 
