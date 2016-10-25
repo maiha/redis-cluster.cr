@@ -32,6 +32,11 @@ module Redis::Cluster::Pool
     @addr2redis[addr] ||= new_redis(addr.host, addr.port)
   end
 
+  private def reconnect_redis(addr : Addr)
+    @addr2redis[addr]?.try(&.close)
+    @addr2redis[addr] = new_redis(addr.host, addr.port)
+  end
+
   def addr(key : String)
     ready!
     slot = Slot.slot(key)
@@ -41,5 +46,9 @@ module Redis::Cluster::Pool
   # public method : for spec
   def on_moved(moved : Redis::Error::Moved)
     @slot2addr[moved.slot] = Addr.parse(moved.to)
+  end
+
+  def on_disconnected(key : String, error)
+    reconnect_redis(addr(key))
   end
 end
