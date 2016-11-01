@@ -4,6 +4,15 @@ redis-cluster library for Crystal
 
 - tested on crystal-0.19.4
 
+## Classes
+
+- Redis : a redis standard client (stefanwille/crystal-redis)
+- Redis::Cluster : a redis cluster client (in this library)
+- Redis::Client : a hybrid proxy to above clients (in this library)
+
+## Supported API
+
+See [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
 
 ## Installation
 
@@ -16,6 +25,8 @@ dependencies:
 ```
 
 ## Usage
+
+### Redis::Cluster client
 
 - assumes that our cluster is runing on localhost:7001 and 7002, ...
 
@@ -37,27 +48,36 @@ cluster.close
 
 See [crystal-redis](https://github.com/stefanwille/crystal-redis) because most of all methods are thin proxy to it.
 
+### Redis client (enhancement)
 
-## Supported API
+This library also add some features to standard `Redis` libarary.
+- [src/ext/redis/commands.cr](src/ext/redis/commands.cr)
 
-See [API](https://github.com/maiha/redis-cluster.cr/blob/master/API.md)
+### Redis::Client
 
-## Redis::Client
+This class is a high level hybrid client which can spech to both
+standard and clustered redis nodes. And it also has a reconnecting feature.
+Well, we don't care anything about the node is restarted or clustered or not. 
 
-#### Feature
-
-- automatically creates standard client or clusterd client
-- automatically reconnect to redis after connection errors
+So, the following code works on either redis mode.
 
 ```crystal
 redis = Redis::Client.new(host: "127.0.0.1", port: 6379, password: nil)
+redis.get("foo")
+
+# RESTRICTION: `multi` needs `key` for its first arg to resolve master node
+redis.multi("foo1") do |multi|
+  multi.set("foo1", "first")
+  multi.set("foo2", "second")
+end
 ```
 
 ## TODO
 
 #### v0.7.0
 
-- [ ] Commands : Transactions
+- [x] Commands : Transactions
+- [ ] Commands : Pipeline
 
 #### v0.6.0
 

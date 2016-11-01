@@ -29,7 +29,20 @@ class ::Redis::Client
   def standard
     @redis.as(::Redis)
   end
-  
+
+  ######################################################################
+  ### Hybrid feature
+
+  def redis_for(key : String)
+    cluster? ? cluster.redis(key) : standard
+  end
+
+  def multi(key)
+    (cluster? ? cluster.redis(key) : standard).multi do |multi|
+      yield(multi)
+    end
+  end
+
   protected def reconnect?(err : Exception)
     case err
     when Errno
