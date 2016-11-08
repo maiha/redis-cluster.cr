@@ -4,7 +4,11 @@ class ::Redis::Client
 
   delegate host, port, unixsocket, password, to: @bootstrap
   getter bootstrap
-  
+
+  def self.boot(bootstrap : String)
+    new(::Redis::Cluster::Bootstrap.parse(bootstrap))
+  end
+
   def initialize(@bootstrap : ::Redis::Cluster::Bootstrap)
   end
 
