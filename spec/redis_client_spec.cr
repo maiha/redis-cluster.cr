@@ -54,4 +54,49 @@ describe Redis::Client do
       client.bootstrap.password.should eq("secret")
     end
   end
+
+  ######################################################################
+  ### Testing with standard redis
+  
+  describe "#redis" do
+    it "returns a Redis instance" do
+      client = Redis::Client.new
+      client.redis.should be_a(Redis)
+      client.close
+    end
+  end
+
+  describe "#cluster?" do
+    it "returns false" do
+      client = Redis::Client.new
+      client.cluster?.should be_false
+      client.close
+    end
+  end  
+
+  describe "#cluster" do
+    it "should raise" do
+      client = Redis::Client.new
+      expect_raises(Exception, "This instance has cluster support disabled: redis://127.0.0.1:6379") do
+        client.cluster
+      end
+      client.close
+    end
+  end  
+
+  describe "#standard?" do
+    it "returns true" do
+      client = Redis::Client.new
+      client.standard?.should be_true
+      client.close
+    end
+  end  
+
+  describe "#standard" do
+    it "returns redis instance" do
+      client = Redis::Client.new
+      client.standard.class.should eq(Redis)
+      client.close
+    end
+  end  
 end

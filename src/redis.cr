@@ -3,7 +3,6 @@ class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
   delegate host, port, unixsocket, password, to: @bootstrap
-  getter! redis
   getter bootstrap
   
   def initialize(@bootstrap : ::Redis::Cluster::Bootstrap)
@@ -14,20 +13,29 @@ class ::Redis::Client
     initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password))
   end
 
+  def redis
+    connect!
+    @redis.not_nil!
+  end
+
   def cluster?
-    @redis.is_a?(::Redis::Cluster::Client)
+    redis.is_a?(::Redis::Cluster::Client)
   end
   
   def cluster
-    @redis.as(::Redis::Cluster::Client)
+    redis.tap{ |r|
+      raise "This instance has cluster support disabled: #{bootstrap}" unless r.is_a?(::Redis::Cluster::Client)
+    }.as(::Redis::Cluster::Client)
   end
   
   def standard?
-    @redis.is_a?(::Redis)
+    redis.is_a?(::Redis)
   end
   
   def standard
-    @redis.as(::Redis)
+    redis.tap{ |r|
+      raise "This instance is running on cluster: #{bootstrap}" unless r.is_a?(::Redis)
+    }.as(::Redis)
   end
 
   ######################################################################
@@ -52,22 +60,20 @@ class ::Redis::Client
     end
   end
   
-  macro method_missing(call)
-    begin
-      @redis ||= connect!
-      @redis.not_nil!.{{call.id}}
-      
-    rescue err
-      if reconnect?(err)
-        @redis.try(&.close) rescue nil
-        @redis = nil
-      end
-      raise err
-    end
+  def connect!
+    @redis ||= establish_connection!
   end
 
+  def close!
+    @redis.try(&.close) rescue nil
+    @redis = nil
+  end
+  
+  ######################################################################
+  ### Connection
+
   # Return a Cluster Connection or Standard Connection
-  private def connect!
+  private def establish_connection!
     redis = bootstrap.redis
 
     begin
@@ -82,5 +88,14 @@ class ::Redis::Client
     end
 
     return ::Redis::Cluster.new(bootstrap)
+  end
+
+  macro method_missing(call)
+    begin
+      redis.{{call.id}}
+    rescue err
+      close! if reconnect?(err)
+      raise err
+    end
   end
 end
