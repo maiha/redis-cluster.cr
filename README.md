@@ -55,34 +55,34 @@ This library also add some features to standard `Redis` libarary.
 
 ### Redis::Client
 
-This class is a high level hybrid client which can spech to both
+This class is a high level hybrid client which can speak to both
 standard and clustered redis nodes. And it also has a reconnecting feature.
 Well, we don't care anything about the node is restarted or clustered or not. 
 
 So, the following code works on either redis mode.
 
 ```crystal
-redis = Redis::Client.new(host: "127.0.0.1", port: 6379, password: nil)
+redis = Redis::Client.new(host: "127.0.0.1", port: 6379)
 redis.get("foo")
+```
 
-# RESTRICTION: `multi` needs `key` for its first arg to resolve master node
+## RESTRICTION
+
+- `multi` needs `key` for its first arg to resolve master node
+
+```crystal
 redis.multi("foo1") do |multi|
   multi.set("foo1", "first")
   multi.set("foo2", "second")
 end
 ```
 
-## TODO
+## Roadmap
 
 #### v0.7.0
 
 - [x] Commands : Transactions
 - [ ] Commands : Pipeline
-
-#### v0.6.0
-
-- [x] Redis::Client for hybrid connection
-- [x] Reconnect Automatically
 
 ## Contributing
 
