@@ -68,8 +68,15 @@ describe Redis::Client do
   ######################################################################
   ### Testing with standard redis
 
-  pending "Travis has old redis, so it can't handle 'cluster' commands" do
+  version = redis_version
+  cluster_support = (version.split(".",3).map(&.to_i) <=> [3,0,0]) == 1
 
+  unless cluster_support
+    pending "Travis has old redis(#{version}), so it can't handle 'cluster' commands" do
+    end
+  end
+
+  if cluster_support
   describe "#redis" do
     it "returns a Redis instance" do
       client = Redis::Client.new
@@ -111,6 +118,5 @@ describe Redis::Client do
       client.close
     end
   end
-
-  end
+  end # end if cluster_support
 end

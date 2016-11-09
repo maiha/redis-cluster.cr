@@ -58,3 +58,13 @@ protected def redis_cluster_client
     r
   }
 end
+
+protected def redis_version : String
+  redis = Redis.new
+  return redis.info("server")["redis_version"]
+rescue err
+  STDERR.puts "checking redis_version failed: #{err}"
+  return "0.0.0"
+ensure
+  redis.try(&.close)
+end

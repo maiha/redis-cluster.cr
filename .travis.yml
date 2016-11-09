@@ -1,5 +1,9 @@
 language: crystal
 services:
   - redis-server
+addons:
+  apt:
+    packages:
+      - redis-server
 script:
   - make test
