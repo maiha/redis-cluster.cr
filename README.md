@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/maiha/redis-cluster.cr.svg?branch=master)](https://travis-ci.org/maiha/redis-cluster.cr)
 
-redis-cluster library for Crystal
+redis-cluster library for [Crystal](http://crystal-lang.org/).
 
-- tested on crystal-0.19.4
+- crystal: 0.20.0, 0.19.4
 
 ## Classes
 
