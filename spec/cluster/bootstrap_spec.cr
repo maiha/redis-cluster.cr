@@ -10,6 +10,12 @@ end
 
 describe Redis::Cluster::Bootstrap do
   describe "#host" do
+    it "should raise if hostname contains ':'" do
+      expect_raises(Exception, /invalid host/) do
+        Redis::Cluster::Bootstrap.new("127.0.0.1:6379").host
+      end
+    end
+
     it "should return host if specified" do
       bootstrap(host: "127.0.0.1").host.should eq("127.0.0.1")
     end

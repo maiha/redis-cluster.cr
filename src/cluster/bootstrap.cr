@@ -8,6 +8,9 @@ module Redis::Cluster
     pass : String? = nil do
 
     def host
+      if @host && @host =~ /:/
+        raise "invalid hostname: #{@host}"
+      end
       @host || "127.0.0.1"
     end
          

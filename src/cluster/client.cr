@@ -2,6 +2,10 @@ require "./commands"
 require "./pool"
 
 class Redis::Cluster::Client
+  include Redis::Commands
+  include Redis::Cluster::Commands
+  include Redis::Cluster::Pool
+
   delegate nodes, to: cluster_info
 
   property bootstraps : Array(Bootstrap)
@@ -37,6 +41,20 @@ class Redis::Cluster::Client
     end
   end
 
+  def reset!
+    conns = @addr2redis.values
+
+    @cluster_info = nil
+    @slot2addr.clear
+    @addr2redis.clear
+
+    conns.each do |redis|
+      redis.close rescue nil
+    end
+
+    ready! # to call load_info
+  end
+
   private def ready!
     cluster_info                # to initialize slots
   end
@@ -44,8 +62,4 @@ class Redis::Cluster::Client
   private def load_info
     Redis::Cluster.load_info(@bootstraps)
   end
-
-  include Redis::Commands
-  include Redis::Cluster::Commands
-  include Redis::Cluster::Pool
 end

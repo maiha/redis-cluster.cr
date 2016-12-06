@@ -18,6 +18,15 @@ class Redis::Error
       super("ASK #{@slot} #{@to}")
     end
   end
+
+  class SlotNotServed < Redis::Error
+    property slot
+
+    def initialize(@slot : Int32, msg : String? = nil)
+      msg ||= "Hash slot not served #{@slot}"
+      super(msg)
+    end
+  end
 end
 
 # original instance creation

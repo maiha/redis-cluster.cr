@@ -82,6 +82,11 @@ end
 #### v0.7.0
 
 - [x] Commands : Transactions
+- [ ] reload slots info
+
+#### v0.8.0
+
+- [ ] define method explicitly
 - [ ] Commands : Pipeline
 
 ## Contributing

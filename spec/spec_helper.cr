@@ -45,7 +45,7 @@ module TestRedisPool
 end
 
 protected def new_redis_cluster(info : Redis::Cluster::ClusterInfo)
-  bootstraps = info.nodes.map{|n| Redis::Cluster::Bootstrap.new(n.addr.to_s)}
+  bootstraps = info.nodes.map{|n| Redis::Cluster::Bootstrap.parse(n.addr.to_s)}
   Redis::Cluster::Client.new(bootstraps).tap(&.cluster_info = info)
 end
 

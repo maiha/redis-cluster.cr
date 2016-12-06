@@ -37,10 +37,12 @@ module Redis::Cluster::Pool
     @addr2redis[addr] = new_redis(addr.host, addr.port)
   end
 
-  def addr(key : String)
+  def addr(key : String) : Addr
     ready!
     slot = Slot.slot(key)
-    return @slot2addr.fetch(slot) { raise "This cluster doesn't cover slot=#{slot} (key=#{key.inspect})" }
+    return @slot2addr.fetch(slot) {
+      on_slot_not_served(slot, key)
+    }
   end
 
   # public method : for spec
@@ -50,5 +52,13 @@ module Redis::Cluster::Pool
 
   def on_disconnected(key : String, error)
     reconnect_redis(addr(key))
+  end
+
+  def on_slot_not_served(slot : Int32, key : String) : Addr
+    reset!
+    return @slot2addr.fetch(slot) {
+      msg = "This cluster doesn't cover slot=#{slot} (key=#{key.inspect})"
+      raise Redis::Error::SlotNotServed.new(slot, msg)
+    }
   end
 end
