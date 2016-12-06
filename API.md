@@ -1,5 +1,5 @@
-# redis-cluster.cr 
-## Supported API
+# Supported API
+## Implemented 57% (113/197)
 ### Connection (1 / 5)
 
 |Command |impl|test|note|

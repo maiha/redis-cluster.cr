@@ -8,7 +8,7 @@ note = File.read("#{__DIR__}/note")
 group = nil
 items = [] of String
 
-count = ->(g : String) { list.count(&.=~ /^#{g}/) }
+count = ->(g : String) { list.count(&.=~ /^#{g}\t/) }
 note_for = ->(key : String) {
   note.scan(/^#{key}\t(.*?)$/m) do
     return $1
@@ -48,8 +48,10 @@ flush = ->(g : String?) {
 
 ### Main
 
-puts "# redis-cluster.cr "
-puts "## Supported API"
+puts "# Supported API"
+
+impl_cnt = (list.map(&.split(/\t/,2).last).flatten.to_set & impl.to_set).size
+puts "## Implemented %d%% (%d/%d)" % [(impl_cnt*100/list.size), impl_cnt, list.size]
 
 list.each do |line|
   g, n = line.chomp.split(/\t/,2)
