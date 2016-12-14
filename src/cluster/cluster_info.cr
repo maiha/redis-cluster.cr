@@ -1,6 +1,6 @@
 class Redis::Cluster::ClusterInfo
-  def self.parse(nodes_str) : ClusterInfo
-    ClusterInfo.new(NodeInfo.array_parse(nodes_str))
+  def self.parse(nodes_str, strict = false) : ClusterInfo
+    ClusterInfo.new(NodeInfo.array_parse(nodes_str, strict))
   end
 
   class NodeNotFound < Exception ; end

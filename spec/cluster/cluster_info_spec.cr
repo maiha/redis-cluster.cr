@@ -105,10 +105,32 @@ describe Redis::Cluster::ClusterInfo do
       info = Redis::Cluster::ClusterInfo.parse <<-EOF
         b3b2965 127.0.0.1:7001 myself,master - 0 0 2 connected 0-9990
         bb6050b 127.0.0.1:7003 slave xyz 0 1466253315354 2 connected
-      EOF
+        EOF
       info.nodes.map(&.addr.to_s).should eq(["127.0.0.1:7001", "127.0.0.1:7003"])
       info.slaves.map(&.addr.to_s).should eq(["127.0.0.1:7003"])
       info.slave_deps.size.should eq(0)
+    end
+  end
+
+  describe "(with vars format)" do
+    nodes = <<-EOF
+      b3b2965 127.0.0.1:7001 myself,master - 0 0 2 connected 0-9990
+      12acff8 127.0.0.1:7002 master - 0 1466253316377 1 connected 10000-16383
+      xyz
+      foo
+      bb6050b 127.0.0.1:7003 slave b3b2965 0 1466253315354 2 connected
+      vars currentEpoch 2 lastVoteEpoch 0
+      EOF
+
+    it "should ignore vars or unknown entry" do
+      info = Redis::Cluster::ClusterInfo.parse(nodes)
+      info.nodes.map(&.addr.port).sort.should eq([7001,7002,7003])
+    end
+
+    it "should raise when strict mode" do
+      expect_raises(Exception, /xyz/) do
+        Redis::Cluster::ClusterInfo.parse(nodes, strict: true)
+      end
     end
   end
 

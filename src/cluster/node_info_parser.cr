@@ -28,10 +28,15 @@ struct Redis::Cluster::NodeInfo
     return Redis::Cluster::NodeInfo.new(sha1: sha1, addr: addr, flags: flags, master: master, sent: sent.to_i64, recv: recv.to_i64, epoch: epoch.to_i64, status: status, slot: slot)
   end
 
-  def self.array_parse(buf : String) : Array(Redis::Cluster::NodeInfo)
+  def self.array_parse(buf : String, strict = false) : Array(Redis::Cluster::NodeInfo)
     nodes = [] of Redis::Cluster::NodeInfo
     buf.each_line do |line|
-      nodes << Redis::Cluster::NodeInfo.parse(line.chomp)
+      case line
+      when /^[0-9a-f]{4}/       # valid node
+        nodes << Redis::Cluster::NodeInfo.parse(line.chomp)
+      else
+        raise "unexpected node format: #{line}" if strict
+      end
     end
     return nodes.sort_by(&.addr)
   end
