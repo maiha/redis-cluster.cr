@@ -21,5 +21,5 @@ src/cluster/commands/api.cr: $(API_FILES) Makefile
 	crystal doc/api/gen.cr > $@
 
 spec:
-	crystal spec -v
+	crystal spec -v --fail-fast
 
