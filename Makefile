@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 CMD_IMPLS := $(shell find src/cluster/commands -name '*.cr')
 CMD_TESTS := $(shell find spec/cluster/commands -name '*.cr')
 API_FILES := $(shell find doc/api -name '*.*')
@@ -6,7 +8,7 @@ API_FILES := $(shell find doc/api -name '*.*')
 
 all: API.md src/cluster/commands/api.cr
 
-test: all spec
+test: all spec check_version_mismatch
 
 API.md: $(API_FILES) doc/api/impl doc/api/test Makefile
 	crystal doc/api/doc.cr > API.md
@@ -23,3 +25,6 @@ src/cluster/commands/api.cr: $(API_FILES) Makefile
 spec:
 	crystal spec -v --fail-fast
 
+.PHONY : check_version_mismatch
+check_version_mismatch: shard.yml README.md
+	diff -w -c <(grep version: README.md) <(grep ^version: shard.yml)
