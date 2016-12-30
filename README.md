@@ -22,7 +22,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   redis-cluster:
     github: maiha/redis-cluster.cr
-    version: 0.7.0
+    version: 0.7.1
 ```
 
 ## Usage
@@ -79,11 +79,6 @@ end
 ```
 
 ## Roadmap
-
-#### v0.7.0
-
-- [x] Commands : Transactions
-- [x] reset! (reload slots info)
 
 #### v0.8.0
 
