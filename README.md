@@ -2,7 +2,7 @@
 
 redis-cluster library for [Crystal](http://crystal-lang.org/).
 
-- crystal: 0.20.3
+- crystal: 0.20.4
 
 ## Classes
 
@@ -22,7 +22,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   redis-cluster:
     github: maiha/redis-cluster.cr
-    version: 0.7.1
+    version: 0.7.2
 ```
 
 ## Usage
