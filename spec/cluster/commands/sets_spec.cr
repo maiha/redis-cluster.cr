@@ -132,7 +132,7 @@ describe "Commands" do
 
       it "with match and count" do
         redis.del("myset")
-        redis.sadd("myset", "foo", "bar", "baz")
+        redis.sadd("myset", "foo", "ba1", "ba2", "ba3", "ba4", "ba5")
         new_cursor, keys = redis.sscan("myset", 0, "*a*", 1)
         new_cursor = new_cursor.as(String)
         new_cursor.to_i.should be > 0
