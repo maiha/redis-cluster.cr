@@ -195,7 +195,7 @@ describe Redis::Cluster::Bootstrap do
       b = Bootstrap.new(sock: "/tmp/xxx.sock")
 
       # here, the error message depends on Crystal implementation (UNIXSocket#initialize)
-      expect_raises(Errno, /: No such file or directory/) do
+      expect_raises(Errno, "unix:///tmp/xxx.sock: No such file or directory") do
         b.redis
       end
 
