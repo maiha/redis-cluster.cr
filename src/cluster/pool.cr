@@ -28,7 +28,7 @@ module Redis::Cluster::Pool
     @addr2redis.clear
   end
 
-  private def redis(addr : Addr)
+  def redis(addr : Addr)
     @addr2redis[addr] ||= new_redis(addr.host, addr.port)
   end
 
