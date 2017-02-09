@@ -22,24 +22,28 @@ class ::Redis::Client
     @redis.not_nil!
   end
 
-  def cluster?
-    redis.is_a?(::Redis::Cluster::Client)
+  def cluster? : ::Redis::Cluster::Client?
+    if redis.is_a?(::Redis::Cluster::Client)
+      redis.as(::Redis::Cluster::Client)
+    else
+      nil
+    end
   end
   
-  def cluster
-    redis.tap{ |r|
-      raise "This instance has cluster support disabled: #{bootstrap}" unless r.is_a?(::Redis::Cluster::Client)
-    }.as(::Redis::Cluster::Client)
+  def cluster : ::Redis::Cluster::Client
+    cluster? || raise "This instance has cluster support disabled: #{bootstrap}"
   end
   
-  def standard?
-    redis.is_a?(::Redis)
+  def standard? : ::Redis?
+    if redis.is_a?(::Redis)
+      redis.as(::Redis)
+    else
+      nil
+    end
   end
   
-  def standard
-    redis.tap{ |r|
-      raise "This instance is running on cluster: #{bootstrap}" unless r.is_a?(::Redis)
-    }.as(::Redis)
+  def standard : ::Redis
+    standard? || raise "This instance is running on cluster: #{bootstrap}"
   end
 
   ######################################################################

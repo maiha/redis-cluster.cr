@@ -88,7 +88,7 @@ describe Redis::Client do
   describe "#cluster?" do
     it "returns false" do
       client = Redis::Client.new
-      client.cluster?.should be_false
+      client.cluster?.should be_nil
       client.close
     end
   end  
@@ -106,7 +106,7 @@ describe Redis::Client do
   describe "#standard?" do
     it "returns true" do
       client = Redis::Client.new
-      client.standard?.should be_true
+      client.standard?.should be_a(Redis)
       client.close
     end
   end  
@@ -114,7 +114,7 @@ describe Redis::Client do
   describe "#standard" do
     it "returns redis instance" do
       client = Redis::Client.new
-      client.standard.class.should eq(Redis)
+      client.standard.should be_a(Redis)
       client.close
     end
   end
