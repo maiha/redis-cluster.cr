@@ -67,6 +67,16 @@ redis = Redis::Client.new(host: "127.0.0.1", port: 6379)
 redis.get("foo")
 ```
 
+### Redis#each
+
+Handy `SCAN` especially for block.
+
+```crystal
+redis = Redis.new
+redis.each(count: 1000) |key|
+redis.each_keys(count: 1000) |keys|
+```
+
 ## RESTRICTION
 
 - `multi` needs `key` for its first arg to resolve master node
