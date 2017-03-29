@@ -22,12 +22,18 @@ module Redis::Cluster
       !! @sock
     end
 
+    def pass? : String?
+      # empty string should be treated as nil for redis password
+      @pass.to_s.empty? ? nil : @pass.to_s
+    end
+
     # aliases
-    def password   ; pass ; end
-    def unixsocket ; sock ; end
+    def pass       ; pass? ; end
+    def password   ; pass  ; end
+    def unixsocket ; sock  ; end
          
     def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil)
-      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||@pass)
+      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||pass?)
     end
 
     def redis
@@ -71,14 +77,16 @@ module Redis::Cluster
       end
         
       uri = URI.parse(s)
+      pass = uri.user
+      pass = nil if pass.to_s.empty?
       if uri.path && uri.host.nil? && uri.port.nil?
-        return new(sock: uri.path, pass: uri.user)
+        return new(sock: uri.path, pass: pass)
       end
       if uri.port && uri.port.not_nil! <= 0
         raise "invalid port for Bootstrap: `#{uri.port}`"
       end
       host = uri.host.to_s.empty? ? nil : uri.host
-      zero.copy(host: host, port: uri.port, pass: uri.user)
+      zero.copy(host: host, port: uri.port, pass: pass)
     end
   end
 end

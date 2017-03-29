@@ -82,6 +82,7 @@ describe Redis::Cluster::Bootstrap do
       parse("redis://host"    ).should eq(bootstrap("host"     , 6379, pass: nil))
       parse("redis://a@"      ).should eq(bootstrap("127.0.0.1", 6379, pass: "a"))
       parse("redis://:1"      ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
+      parse("redis://@:1"     ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
       # sock
       parse("redis:///tmp/s"  ).should eq(bootstrap(sock: "/tmp/s"))
       parse("redis://a@/tmp/s").should eq(bootstrap(sock: "/tmp/s", pass: "a"))
@@ -97,6 +98,7 @@ describe Redis::Cluster::Bootstrap do
       parse("host"    ).should eq(bootstrap("host"     , 6379, pass: nil))
       parse("a@"      ).should eq(bootstrap("127.0.0.1", 6379, pass: "a"))
       parse(":1"      ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
+      parse("@:1"     ).should eq(bootstrap("127.0.0.1", 1   , pass: nil))
       # sock
       parse("/tmp/s"  ).should eq(bootstrap(sock: "/tmp/s"))
       parse("a@/tmp/s").should eq(bootstrap(sock: "/tmp/s", pass: "a"))
