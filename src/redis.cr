@@ -1,4 +1,10 @@
 # Hybrid client for standard or clustered
+#
+# [retry strategy]
+# a) `Cluster::Client` provides `retry` feature, so it retries automatically
+# b) (standard) `Redis` lacks the feature, so it just raises errors without retry
+# c) Hybrid commands in `Redis::Client` has own `retry` feature
+
 class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
@@ -47,27 +53,8 @@ class ::Redis::Client
   end
 
   ######################################################################
-  ### Hybrid feature
+  ### Connection
 
-  def redis_for(key : String)
-    cluster? ? cluster.redis(key) : standard
-  end
-
-  def multi(key)
-    (cluster? ? cluster.redis(key) : standard).multi do |multi|
-      yield(multi)
-    end
-  end
-
-  protected def reconnect?(err : Exception)
-    case err
-    when Errno
-      true
-    else
-      false
-    end
-  end
-  
   def connect!
     @redis ||= establish_connection!
   end
@@ -77,9 +64,6 @@ class ::Redis::Client
     @redis = nil
   end
   
-  ######################################################################
-  ### Connection
-
   # Return a Cluster Connection or Standard Connection
   private def establish_connection!
     redis = bootstrap.redis
@@ -98,11 +82,50 @@ class ::Redis::Client
     return ::Redis::Cluster.new(bootstrap)
   end
 
-  macro method_missing(call)
+  ######################################################################
+  ### Hybrid feature
+
+  def redis_for(key : String)
+    cluster? ? cluster.redis(key) : standard
+  end
+
+  # TODO: dryup with macro
+  def pipelined(key, reconnect : Bool = false)
+    redis_for(key).pipelined do |api|
+      yield(api)
+    end
+  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+    close!
+    if reconnect
+      redis_for(key).pipelined do |api|
+        yield(api)
+      end
+    else
+      raise err
+    end
+  end
+
+  def multi(key, reconnect : Bool = false)
+    redis_for(key).multi do |api|
+      yield(api)
+    end
+  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+    close!
+    if reconnect
+      redis_for(key).multi do |api|
+        yield(api)
+      end
+    else
+      raise err
+    end
+  end
+
+  private macro method_missing(call)
     begin
       redis.{{call.id}}
-    rescue err
-      close! if reconnect?(err)
+    rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+      # We should reconnect when these errors happened.
+      close!
       raise err
     end
   end

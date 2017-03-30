@@ -118,5 +118,27 @@ describe Redis::Client do
       client.close
     end
   end
+
+  ######################################################################
+  ### Hybrid API
+
+  describe "#pipelined" do
+    it "works (compile)" do
+      client = Redis::Client.new
+      client.pipelined("foo") do
+      end
+      client.close
+    end
+  end
+
+  describe "#multi" do
+    it "works (compile)" do
+      client = Redis::Client.new
+      client.multi("foo") do
+      end
+      client.close
+    end
+  end
+
   end # end if cluster_support
 end

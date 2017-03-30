@@ -67,6 +67,25 @@ redis = Redis::Client.new(host: "127.0.0.1", port: 6379)
 redis.get("foo")
 ```
 
+### multi and pipelined
+
+`Redis::Client#multi` and `pipelined` requires a key to resolve redis node.
+In standard redis, the information is just ignored but it is necessary for hybrid api.
+
+```crystal
+redis.pipelined("foo") do |api|
+  api.set("foo", 1)
+  api.set("bar", 2) # raises unless both "foo" and "bar" are in the same node
+end
+```
+
+When `reconnect` option is set, operations will be executed once again after connection error or hash slot error.
+
+```crystal
+redis.pipelined("foo", reconnect: true) do |api|
+  ...
+```
+
 ### Redis#each
 
 Handy `SCAN` especially for block.
@@ -93,7 +112,7 @@ end
 #### v0.8.0
 
 - [ ] define method explicitly
-- [ ] Commands : Pipeline
+- [x] Commands : Pipeline
 
 ## Contributing
 
