@@ -22,7 +22,7 @@ Add this to your application's `shard.yml`:
 dependencies:
   redis-cluster:
     github: maiha/redis-cluster.cr
-    version: 0.7.6
+    version: 0.7.7
 ```
 
 ## Usage
