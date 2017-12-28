@@ -131,11 +131,12 @@ class Redis::Cluster::ClusterInfo
   end
   
   private def build_slave_deps : Hash(NodeInfo, Array(NodeInfo))
-    slaves = {} of NodeInfo => Array(NodeInfo)
+    slaves = Hash(NodeInfo, Array(NodeInfo)).new
     nodes.each do |node|
       if node.slave? && node.has_master?
         case (master = find_node_by(node.master))
         when NodeInfo
+          master = master.not_nil!
           slaves[master] ||= [] of NodeInfo
           slaves[master] << node
         end

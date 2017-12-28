@@ -2,7 +2,7 @@
 
 redis-cluster library for [Crystal](http://crystal-lang.org/).
 
-- crystal: 0.21.1
+- crystal: 0.24.1
 
 ## Classes
 
