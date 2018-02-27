@@ -1,11 +1,14 @@
 require "uri"
+require "openssl"
 
 module Redis::Cluster
   record Bootstrap,
     host : String? = nil,
     port : Int32?  = nil,
     sock : String? = nil,
-    pass : String? = nil do
+    pass : String? = nil,
+    ssl  : Bool = false,
+    sslcontext  : OpenSSL::SSL::Context::Client? = nil do
 
     def host
       if @host && @host =~ /:/
@@ -32,12 +35,12 @@ module Redis::Cluster
     def password   ; pass  ; end
     def unixsocket ; sock  ; end
          
-    def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil)
-      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||pass?)
+    def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil, ssl : Bool = false,sslcontext : OpenSSL::SSL::Context::Client? = nil)
+      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||pass?, ssl: ssl||@ssl, sslcontext: sslcontext||@sslcontext)
     end
 
     def redis
-      Redis.new(host: host, port: port, unixsocket: @sock, password: @pass)
+      Redis.new(host: host, port: port, unixsocket: @sock, password: @pass, ssl: @ssl, sslcontext: @sslcontext)
     rescue err : Errno
       if sock? && err.to_s =~ /No such file or directory/
         raise Errno.new("unix://%s" % sock)
