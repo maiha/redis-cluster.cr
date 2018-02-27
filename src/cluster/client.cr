@@ -11,6 +11,7 @@ class Redis::Cluster::Client
   property bootstraps : Array(Bootstrap)
   
   def initialize(@bootstraps : Array(Bootstrap))
+    @ssl = @bootstraps.first.ssl
     @slot2addr  = Hash(Int32, Addr).new
     @addr2redis = Hash(Addr, Redis).new
   end
