@@ -1,3 +1,4 @@
+require "openssl"
 # Hybrid client for standard or clustered
 #
 # [retry strategy]
@@ -8,7 +9,7 @@
 class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
-  delegate host, port, unixsocket, password, to: @bootstrap
+  delegate host, port, unixsocket, password, ssl, sslcontext, to: @bootstrap
   getter bootstrap
 
   def self.boot(bootstrap : String)
@@ -19,8 +20,8 @@ class ::Redis::Client
   end
 
   # compats with `::Redis.new`
-  def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil)
-    initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password))
+  def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil, ssl : Bool = false, sslcontext : OpenSSL::SSL::Context::Client? = nil)
+    initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password, ssl: ssl, sslcontext: sslcontext))
   end
 
   def redis
