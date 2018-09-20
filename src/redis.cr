@@ -94,7 +94,7 @@ class ::Redis::Client
     redis_for(key).pipelined do |api|
       yield(api)
     end
-  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
     close!
     if reconnect
       redis_for(key).pipelined do |api|
@@ -109,7 +109,7 @@ class ::Redis::Client
     redis_for(key).multi do |api|
       yield(api)
     end
-  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
     close!
     if reconnect
       redis_for(key).multi do |api|
@@ -123,7 +123,7 @@ class ::Redis::Client
   private macro method_missing(call)
     begin
       redis.{{call.id}}
-    rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+    rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
       # We should reconnect when these errors happened.
       close!
       raise err
