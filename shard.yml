@@ -1,13 +1,13 @@
 name: redis-cluster
-version: 0.7.7
+version: 0.8.0
 
 dependencies:
   redis:
-    github: y2k2mt/crystal-redis
-    branch: secure-connection
+    github: stefanwille/crystal-redis
+    version: ">= 2.1.0"
   crc16:
     github: maiha/crc16.cr
-    version: 0.1.0
+    version: ">= 0.1.0"
 
 authors:
   - maiha <maiha@wota.jp>

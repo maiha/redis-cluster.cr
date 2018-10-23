@@ -20,7 +20,7 @@ module Redis::Cluster::Commands
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(", ").id }})
       redis(key.to_s).{{ invoke }}
-    rescue error : Redis::DisconnectedError | IO::Error
+    rescue error : Redis::ConnectionError | IO::Error
       on_disconnected(key.to_s, error)
       redis(key.to_s).{{ invoke }}
     rescue moved : Redis::Error::Moved
@@ -41,7 +41,7 @@ module Redis::Cluster::Commands
       key = {{args.first}}.first { raise "{{name}}: key not found" }
       begin
         redis(key.to_s).{{ invoke }}
-      rescue error : Redis::DisconnectedError | IO::Error
+      rescue error : Redis::ConnectionError | IO::Error
         on_disconnected(key.to_s, error)
         redis(key.to_s).{{ invoke }}
       rescue moved : Redis::Error::Moved
@@ -64,7 +64,7 @@ module Redis::Cluster::Commands
       key = {{args.id}}[1]
       begin
         redis(key.to_s).{{ invoke }}
-      rescue error : Redis::DisconnectedError | IO::Error
+      rescue error : Redis::ConnectionError | IO::Error
         on_disconnected(key.to_s, error)
         redis(key.to_s).{{ invoke }}
       rescue moved : Redis::Error::Moved
@@ -88,7 +88,7 @@ module Redis::Cluster::Commands
       key = h.keys.first       # for first key
       begin
         redis(key.to_s).{{ invoke }}
-      rescue error : Redis::DisconnectedError | IO::Error
+      rescue error : Redis::ConnectionError | IO::Error
         on_disconnected(key.to_s, error)
         redis(key.to_s).{{ invoke }}
       rescue moved : Redis::Error::Moved

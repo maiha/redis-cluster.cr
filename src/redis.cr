@@ -9,7 +9,7 @@ require "openssl"
 class ::Redis::Client
   @redis : ::Redis | ::Redis::Cluster::Client | Nil
 
-  delegate host, port, unixsocket, password, ssl, sslcontext, to: @bootstrap
+  delegate host, port, unixsocket, password, ssl, ssl_context, to: @bootstrap
   getter bootstrap
 
   def self.boot(bootstrap : String)
@@ -20,8 +20,8 @@ class ::Redis::Client
   end
 
   # compats with `::Redis.new`
-  def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil, ssl : Bool = false, sslcontext : OpenSSL::SSL::Context::Client? = nil)
-    initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password, ssl: ssl, sslcontext: sslcontext))
+  def initialize(host : String? = nil, port : Int32? = nil, unixsocket : String? = nil, password : String? = nil, ssl : Bool = false, ssl_context : OpenSSL::SSL::Context::Client? = nil)
+    initialize(::Redis::Cluster::Bootstrap.new(host: host, port: port, sock: unixsocket, pass: password, ssl: ssl, ssl_context: ssl_context))
   end
 
   def redis
@@ -95,7 +95,7 @@ class ::Redis::Client
     redis_for(key).pipelined do |api|
       yield(api)
     end
-  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
     close!
     if reconnect
       redis_for(key).pipelined do |api|
@@ -110,7 +110,7 @@ class ::Redis::Client
     redis_for(key).multi do |api|
       yield(api)
     end
-  rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
     close!
     if reconnect
       redis_for(key).multi do |api|
@@ -124,7 +124,7 @@ class ::Redis::Client
   private macro method_missing(call)
     begin
       redis.{{call.id}}
-    rescue err : Redis::DisconnectedError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
+    rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
       # We should reconnect when these errors happened.
       close!
       raise err

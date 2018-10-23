@@ -8,7 +8,7 @@ module Redis::Cluster
     sock : String? = nil,
     pass : String? = nil,
     ssl  : Bool = false,
-    sslcontext  : OpenSSL::SSL::Context::Client? = nil do
+    ssl_context  : OpenSSL::SSL::Context::Client? = nil do
 
     def host
       if @host && @host =~ /:/
@@ -35,17 +35,18 @@ module Redis::Cluster
     def password   ; pass  ; end
     def unixsocket ; sock  ; end
          
-    def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil, ssl : Bool = false,sslcontext : OpenSSL::SSL::Context::Client? = nil)
-      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||pass?, ssl: ssl||@ssl, sslcontext: sslcontext||@sslcontext)
+    def copy(host : String? = nil, port : Int32? = nil, sock : String? = nil, pass : String? = nil, ssl : Bool = false,ssl_context : OpenSSL::SSL::Context::Client? = nil)
+      Bootstrap.new(host: host||@host, port: port||@port, sock: sock||@sock, pass: pass||pass?, ssl: ssl||@ssl, ssl_context: ssl_context||@ssl_context)
     end
 
     def redis
-      Redis.new(host: host, port: port, unixsocket: @sock, password: @pass, ssl: @ssl, sslcontext: @sslcontext)
-    rescue err : Errno
+      Redis.new(host: host, port: port, unixsocket: @sock, password: @pass, ssl: @ssl, ssl_context: @ssl_context)
+    rescue err : Errno | Redis::Error
       if sock? && err.to_s =~ /No such file or directory/
         raise Errno.new("unix://%s" % sock)
       else
-        raise err
+        # convert `Redis::Error` to `Errno`
+        raise Errno.new(err.to_s)
       end
     end
 
