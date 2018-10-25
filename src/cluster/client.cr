@@ -49,6 +49,14 @@ class Redis::Cluster::Client
     end
   end
 
+  def ssl_context
+    if @bootstraps.empty?
+      return nil
+    else
+      return @bootstraps.first.ssl_context
+    end
+  end
+
   def reset!
     conns = @addr2redis.values
 
