@@ -71,9 +71,13 @@ module Redis::Cluster
     end
 
     def self.parse(s : String)
+      ssl = false
       case s
       when %r{\Aredis://}
         # normalized
+      when %r{\Arediss://}
+        # normalized
+        ssl = true
       when %r{\A([a-z0-9\.\+-]+):/}
         raise "unknown scheme for Bootstrap: `#{$1}`"
       else
@@ -84,13 +88,13 @@ module Redis::Cluster
       pass = uri.user
       pass = nil if pass.to_s.empty?
       if uri.path && uri.host.nil? && uri.port.nil?
-        return new(sock: uri.path, pass: pass)
+        return new(sock: uri.path, pass: pass, ssl: ssl)
       end
       if uri.port && uri.port.not_nil! <= 0
         raise "invalid port for Bootstrap: `#{uri.port}`"
       end
       host = uri.host.to_s.empty? ? nil : uri.host
-      zero.copy(host: host, port: uri.port, pass: pass)
+      zero.copy(host: host, port: uri.port, pass: pass, ssl: ssl)
     end
   end
 end
