@@ -186,9 +186,9 @@ describe Redis::Cluster::Bootstrap do
       b.redis.close # should work
     end
 
-    it "should raise when redis is down" do
+    it "should raise Redis::CannotConnectError when redis is down" do
       b = Bootstrap.new(port: 6380)  # when redis is down
-      expect_raises(Errno, /127.0.0.1:6380/) do
+      expect_raises(Redis::CannotConnectError, /127.0.0.1:6380/) do
         b.redis
       end
     end
@@ -197,7 +197,7 @@ describe Redis::Cluster::Bootstrap do
       b = Bootstrap.new(sock: "/tmp/xxx.sock")
 
       # here, the error message depends on Crystal implementation (UNIXSocket#initialize)
-      expect_raises(Errno, "unix:///tmp/xxx.sock: No such file or directory") do
+      expect_raises(Redis::CannotConnectError, "file:///tmp/xxx.sock") do
         b.redis
       end
 
