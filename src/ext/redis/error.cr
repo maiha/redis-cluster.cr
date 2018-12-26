@@ -29,13 +29,6 @@ class Redis::Error
   end
 end
 
-# original instance creation
-def Redis::Error.new0(s : String)
-  err = Redis::Error.allocate
-  err.initialize(s)
-  err
-end
-
 # override for Moved and Ask
 def Redis::Error.new(s)
   case s
@@ -44,6 +37,6 @@ def Redis::Error.new(s)
   when /\AASK (\d+) (\S+)/
     Redis::Error::Ask.new($1.to_i32, $2)
   else
-    new0(s)
+    super(s)
   end
 end

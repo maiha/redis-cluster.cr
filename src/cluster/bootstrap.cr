@@ -41,12 +41,11 @@ module Redis::Cluster
 
     def redis
       Redis.new(host: host, port: port, unixsocket: @sock, password: @pass, ssl: @ssl, ssl_context: @ssl_context)
-    rescue err : Errno | Redis::Error
-      if sock? && err.to_s =~ /No such file or directory/
-        raise Errno.new("unix://%s" % sock)
+    rescue err : Redis::CannotConnectError
+      if sock?
+        raise Redis::CannotConnectError.new("file://#{@sock}")
       else
-        # convert `Redis::Error` to `Errno`
-        raise Errno.new(err.to_s)
+        raise err
       end
     end
 
