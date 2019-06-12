@@ -17,7 +17,7 @@ class Redis::Cluster::ClusterInfo
   end
 
   def slaves : Array(NodeInfo)
-    nodes.select(&.slave?)
+    nodes.select(&.is_slave)
   end
 
   def acked_slaves : Array(NodeInfo)
@@ -133,7 +133,7 @@ class Redis::Cluster::ClusterInfo
   private def build_slave_deps : Hash(NodeInfo, Array(NodeInfo))
     slaves = Hash(NodeInfo, Array(NodeInfo)).new
     nodes.each do |node|
-      if node.slave? && node.has_master?
+      if node.is_slave && node.has_master?
         case (master = find_node_by(node.master))
         when NodeInfo
           master = master.not_nil!
@@ -145,7 +145,7 @@ class Redis::Cluster::ClusterInfo
 
     # remove past masters that is regarded as a master but is now a slave
     slaves.keys.each do |node|
-      slaves.delete(node) if node.slave?
+      slaves.delete(node) if node.is_slave
     end
     
     return slaves
@@ -154,7 +154,7 @@ class Redis::Cluster::ClusterInfo
   private def build_slot2addr
     Hash(Int32, Addr).new.tap {|hash|
       nodes.each do |node|
-        next unless node.master? && node.slot?
+        next unless node.is_master && node.slot?
         node.slot.each do |slot|
           hash[slot] = Addr.new(node.host, node.port)
         end

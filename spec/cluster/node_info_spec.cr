@@ -30,8 +30,8 @@ describe Redis::Cluster::NodeInfo do
 #                                   "7f193d 127.0.0.1:7002 master",
 #                                   "053dd7 127.0.0.1:7003 master"])
 
-      nodes.select(&.fail?).map(&.addr.to_s).should eq(["127.0.0.1:7004"])
-      nodes.select(&.disconnected?).map(&.addr.to_s).should eq(["127.0.0.1:7004"])
+      nodes.select(&.is_fail).map(&.addr.to_s).should eq(["127.0.0.1:7004"])
+      nodes.select(&.is_disconnected).map(&.addr.to_s).should eq(["127.0.0.1:7004"])
       nodes.select(&.standalone?).map(&.addr.to_s).should eq(["127.0.0.1:7008", "127.0.0.1:7009"])
     end
   end

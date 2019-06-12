@@ -12,7 +12,7 @@ module Redis::Cluster::Commands
   end
 
   def randomkey
-    nodes.select(&.master?).each{|n|
+    nodes.select(&.is_master).each{|n|
       key = redis(n.addr).randomkey
       return key if key
     }
@@ -32,7 +32,7 @@ module Redis::Cluster::Commands
   ### Server
 
   def flushall
-    nodes.select(&.master?).map{|n|
+    nodes.select(&.is_master).map{|n|
       redis(n.addr).flushall
     }
   end

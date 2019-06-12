@@ -12,12 +12,12 @@ record Redis::Cluster::NodeInfo,
   def_equals_and_hash sha1
   delegate host, port, cport, to: addr
   
-  val master? = !! flags["master"]?
-  val slave?  = !! flags["slave"]?
-  val fail?   = !! flags["fail"]?
+  val is_master = !! flags["master"]?
+  val is_slave  = !! flags["slave"]?
+  val is_fail   = !! flags["fail"]?
 
-  val connected?    = status.split(",").includes?("connected")
-  val disconnected? = !! status["disconnected"]?
+  val is_connected    = status.split(",").includes?("connected")
+  val is_disconnected = !! status["disconnected"]?
 
   def sha1_6
     "#{sha1}??????"[0..5]
@@ -40,7 +40,7 @@ record Redis::Cluster::NodeInfo,
   end
 
   def standalone?
-    !serving? && !slave?
+    !serving? && !is_slave
   end
 
   def has_master?
