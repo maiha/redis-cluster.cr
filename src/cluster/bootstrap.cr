@@ -3,7 +3,7 @@ require "uri"
 module Redis::Cluster
   record Bootstrap,
     host : String? = nil,
-    port : Int32?  = nil,
+    port : Int32? = nil,
     sock : String? = nil,
     pass : String? = nil do
 
@@ -13,13 +13,13 @@ module Redis::Cluster
       end
       @host || "127.0.0.1"
     end
-         
+
     def port
       @port || 6379
     end
-         
+
     def sock?
-      !! @sock
+      !!@sock
     end
 
     def pass? : String?
@@ -62,7 +62,7 @@ module Redis::Cluster
     def to_s(io : IO)
       io << to_s
     end
-    
+
     def self.zero
       new(host: Addr::DEFAULT_HOST, port: Addr::DEFAULT_PORT, pass: nil)
     end
@@ -73,15 +73,25 @@ module Redis::Cluster
         # normalized
       when %r{\A([a-z0-9\.\+-]+):/}
         raise "unknown scheme for Bootstrap: `#{$1}`"
+      when ""
+        return zero
       else
         s = "redis://#{s}"
       end
-        
+
       uri = URI.parse(s)
       pass = uri.user
       pass = nil if pass.to_s.empty?
-      if uri.path && uri.host.nil? && uri.port.nil?
-        return new(sock: uri.path, pass: pass)
+      if uri.path && uri.host.try &.empty? && uri.port.nil?
+        if pass
+          if uri.path.empty?
+            return zero.copy(port: uri.port, pass: pass)
+          else
+            return new(sock: uri.path, port: uri.port, pass: pass)
+          end
+        else
+          return new(sock: uri.path, pass: pass)
+        end
       end
       if uri.port && uri.port.not_nil! <= 0
         raise "invalid port for Bootstrap: `#{uri.port}`"
