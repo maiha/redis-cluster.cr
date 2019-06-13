@@ -9,7 +9,7 @@ describe "Commands" do
 
     it "#expireat" do
       redis.set("temp", "3")
-      redis.expireat("temp", 1555555555005).should eq(1)
+      redis.expireat("temp", 166655555005).should eq(1)
       redis.ttl("temp").should be > 3000
     end
 
@@ -27,7 +27,7 @@ describe "Commands" do
 
     it "#pexpireat" do
       redis.set("temp", "3")
-      redis.pexpireat("temp", 1555555555005).should eq(1)
+      redis.pexpireat("temp", 16666555555005).should eq(1)
       redis.pttl("temp").should be > 2990
     end
 
