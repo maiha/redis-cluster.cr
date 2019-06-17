@@ -19,6 +19,26 @@ record Redis::Cluster::NodeInfo,
   val is_connected    = status.split(",").includes?("connected")
   val is_disconnected = !! status["disconnected"]?
 
+  def master?
+    is_master
+  end
+
+  def slave?
+    is_slave
+  end
+
+  def fail?
+    is_fail
+  end
+
+  def connected?
+    is_connected
+  end
+
+  def disconnected?
+    is_disconnected
+  end
+
   def sha1_6
     "#{sha1}??????"[0..5]
   end
@@ -40,7 +60,7 @@ record Redis::Cluster::NodeInfo,
   end
 
   def standalone?
-    !serving? && !is_slave
+    !serving? && !slave?
   end
 
   def has_master?

@@ -25,7 +25,7 @@ end
 def node_mark(node : NodeInfo)
   if node.serving?
     "M"
-  elsif node.is_master
+  elsif node.master?
     "-"
   else
     "S"
