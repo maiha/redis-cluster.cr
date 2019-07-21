@@ -77,15 +77,17 @@ module Redis::Cluster
       end
         
       uri = URI.parse(s)
-      pass = uri.user
-      pass = nil if pass.to_s.empty?
-      if uri.path && uri.host.nil? && uri.port.nil?
-        return new(sock: uri.path, pass: pass)
+      # `URI.parse("redis:///")` now builds `host` as `""` rather than `nil` (#6323 in crystal-0.29)
+      host = uri.host.to_s.empty? ? nil : uri.host.to_s
+      pass = uri.user.to_s.empty? ? nil : uri.user
+      path = uri.path.to_s.empty? ? nil : uri.path.to_s
+
+      if path && host.nil? && uri.port.nil?
+        return new(sock: path, pass: pass)
       end
       if uri.port && uri.port.not_nil! <= 0
         raise "invalid port for Bootstrap: `#{uri.port}`"
       end
-      host = uri.host.to_s.empty? ? nil : uri.host
       zero.copy(host: host, port: uri.port, pass: pass)
     end
   end
