@@ -27,8 +27,8 @@ describe "Commands" do
 
     it "#pexpireat" do
       redis.set("temp", "3")
-      redis.pexpireat("temp", 1555555555005).should eq(1)
-      redis.pttl("temp").should be > 2990
+      redis.pexpireat("temp", 2555555555005).should eq(1) # 2050-12-25
+      redis.pttl("temp").should be > 86400*365            # At least one year later
     end
 
     it "#pttl" do
