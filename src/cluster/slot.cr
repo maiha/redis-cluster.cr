@@ -57,7 +57,7 @@ module Redis::Cluster
 
     # same as name except special slots
     def signature
-      @label.split(DELIMITER).grep(/\A\d+($|-)/).sort_by(&.scan(/^(\d+)/).map(&.[0]).join.to_i).join(",")
+      @label.split(DELIMITER).select(/\A\d+($|-)/).sort_by(&.scan(/^(\d+)/).map(&.[0]).join.to_i).join(",")
     end
 
     def slots

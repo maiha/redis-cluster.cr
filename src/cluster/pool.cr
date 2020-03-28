@@ -5,7 +5,7 @@ module Redis::Cluster::Pool
     Redis.new(host: host, port: port, password: password)
   end
   
-  def redis(key : String)
+  def redis(key : String) : Redis
     redis(addr(key))
   end
 
