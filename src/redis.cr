@@ -89,44 +89,38 @@ class ::Redis::Client
     cluster? ? cluster.redis(key) : standard
   end
 
-  # TODO: dryup with macro
-  def pipelined(key, reconnect : Bool = false)
-    redis_for(key).pipelined do |api|
-      yield(api)
-    end
-  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
-    close!
-    if reconnect
-      redis_for(key).pipelined do |api|
+  ######################################################################
+  ### Reconnected feature
+
+  {% for method in %w( pipelined multi ) %}
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
+
+    def {{method.id}}(key, reconnect : Bool = false)
+      redis_for(key).{{method.id}} do |api|
         yield(api)
       end
-    else
-      raise err
-    end
-  end
-
-  def multi(key, reconnect : Bool = false)
-    redis_for(key).multi do |api|
-      yield(api)
-    end
-  rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
-    close!
-    if reconnect
-      redis_for(key).multi do |api|
-        yield(api)
-      end
-    else
-      raise err
-    end
-  end
-
-  private macro method_missing(call)
-    begin
-      redis.{{call.id}}
-    rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | Errno
-      # We should reconnect when these errors happened.
+    rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | {{errno.id}}
       close!
-      raise err
+      if reconnect
+        redis_for(key).pipelined do |api|
+          yield(api)
+        end
+      else
+        raise err
+      end
     end
-  end
+  {% end %}
+
+  {% begin %}
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
+    private macro method_missing(call)
+      begin
+        redis.\{{call.id}}
+      rescue err : Redis::ConnectionError | IO::Error | Redis::Error::Moved | Redis::Error::Ask | {{ errno.id }}
+        # We should reconnect when these errors happened.
+        close!
+        raise err
+      end
+    end
+  {% end %}
 end

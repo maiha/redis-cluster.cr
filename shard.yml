@@ -3,8 +3,8 @@ version: 0.8.2
 
 dependencies:
   redis:
-    github: stefanwille/crystal-redis
-    version: ">= 2.1.0"
+    github: maiha/crystal-redis
+    version: ">= 2.6.0"
   crc16:
     github: maiha/crc16.cr
     version: ">= 0.1.0"

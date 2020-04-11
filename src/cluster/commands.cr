@@ -16,6 +16,7 @@ module Redis::Cluster::Commands
   #     redis(key.to_s).set(key, value, ex: ex, px: px, nx: nx, xx: xx)
   #   end
   macro proxy(name, *args)
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
     {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a.is_a?(TypeDeclaration) ? a.var : a}.join(", ").id %}
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(", ").id }})
@@ -28,13 +29,14 @@ module Redis::Cluster::Commands
       redis(key.to_s).{{ invoke }}
     rescue ask : Redis::Error::Ask
       redis(Addr.parse(ask.to)).{{ invoke }}
-    rescue err : Errno
+    rescue err : {{ errno.id }}
       redis(key.to_s).{{ invoke }}
     end
   end
 
   # treat the 1st arg as the key
   macro proxy_ary(name, *args)
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
     {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a}.join(", ").id %}
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(",").id }})
@@ -49,7 +51,7 @@ module Redis::Cluster::Commands
         redis(key.to_s).{{ invoke }}
       rescue ask : Redis::Error::Ask
         redis(Addr.parse(ask.to)).{{ invoke }}
-      rescue err : Errno
+      rescue err : {{ errno.id }}
         redis(key.to_s).{{ invoke }}
       end
     end
@@ -57,6 +59,7 @@ module Redis::Cluster::Commands
 
   # treat the 2nd arg as the key
   macro proxy_ary2(name, args)
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
     {% invoke = "#{name}(#{args.id})".id %}
 
     def {{ name.id }}({{ args.id }})
@@ -72,7 +75,7 @@ module Redis::Cluster::Commands
         redis(key.to_s).{{ invoke }}
       rescue ask : Redis::Error::Ask
         redis(Addr.parse(ask.to)).{{ invoke }}
-      rescue err : Errno
+      rescue err : {{ errno.id }}
         redis(key.to_s).{{ invoke }}
       end
     end
@@ -80,6 +83,7 @@ module Redis::Cluster::Commands
 
   # Use first key to resolve node
   macro proxy_hash(name, *args)
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
     {% named_args = args.map{|a| a.is_a?(Assign) ? "#{a.target}: #{a.target}" : a}.join(", ").id %}
     {% invoke = "#{name}(#{named_args})".id %}
     def {{ name.id }}({{ args.join(",").id }})
@@ -96,7 +100,7 @@ module Redis::Cluster::Commands
         redis(key.to_s).{{ invoke }}
       rescue ask : Redis::Error::Ask
         redis(Addr.parse(ask.to)).{{ invoke }}
-      rescue err : Errno
+      rescue err : {{ errno.id }}
         redis(key.to_s).{{ invoke }}
       end
     end

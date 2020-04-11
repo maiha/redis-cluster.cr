@@ -55,6 +55,7 @@ module Redis::Cluster
         return extract_count(Search.new(field: "count", label: "cnt"))
       when "m", "mem", "memory"
         return extract_memory(Search.new(field: "memory", label: "mem"))
+      else
       end
       
       # search prefixed
@@ -115,6 +116,8 @@ module Redis::Cluster
       return "mem(#{cur};#{pol};#{pct}%)"
     end
 
+    {% begin %}
+    {% errno = (compare_versions(Crystal::VERSION, "0.34.0-0") > 0) ? "RuntimeError" : "Errno" %}
     private def extract_count(search)
       # TODO: DRYUP with `Redis::Commands#count`
       cnt = case @hash.fetch("db0") { "" }
@@ -124,8 +127,9 @@ module Redis::Cluster
               0.to_i64
             end
       return "cnt(#{cnt})"
-    rescue err : Errno
+    rescue err : {{ errno.id }}
       return NotFound.new(search)
     end
+    {% end %}
   end
 end
