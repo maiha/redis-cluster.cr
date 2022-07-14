@@ -3,8 +3,8 @@ version: 0.8.3
 
 dependencies:
   redis:
-    github: maiha/crystal-redis
-    version: ">= 2.6.0"
+    github: stefanwille/crystal-redis
+    version: ">= 2.8.0" # introduced Hash as return type
   crc16:
     github: maiha/crc16.cr
     version: ">= 0.1.0"

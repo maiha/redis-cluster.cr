@@ -18,7 +18,12 @@ end
 
 # Same as `sort` except sorting feature
 protected def array(a) : Array(String)
-  (a.as(Array(Redis::RedisValue))).map(&.to_s)
+  case a
+  when Hash
+    raise ArgumentError.new("can't cast Hash(String, String) to Array(Redis::RedisValue)")
+  else
+    (a.as(Array(Redis::RedisValue))).map(&.to_s)
+  end
 rescue
   raise "Cannot convert to Array(Redis::RedisValue): #{a.class}"
 end

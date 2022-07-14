@@ -2,7 +2,7 @@
 
 redis-cluster library for [Crystal](http://crystal-lang.org/).
 
-- **supported versions** : 0.27.2 0.31.1 0.32.1 0.33.0 0.34.0
+- **supported versions** : 0.27.2 0.31.1 0.32.1 0.33.0 0.34.0 .. 1.5.0
 - **crystal-redis** : using forked [maiha/crystal-redis](https://github.com/maiha/crystal-redis)
   - The original version [stefanwille/crystal-redis](https://github.com/stefanwille/crystal-redis) only supports the latest version of CRYSTAL.
 
