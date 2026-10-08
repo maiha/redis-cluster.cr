@@ -12,7 +12,7 @@ GUESSED_VERSION=$(shell git tag -l | sort -V | tail -1 | awk 'BEGIN { FS="." } {
 
 all: API.md src/cluster/commands/api.cr
 
-test: all spec check_version_mismatch
+test: all spec
 
 API.md: $(API_FILES) doc/api/impl doc/api/test Makefile
 	crystal doc/api/doc.cr > API.md
@@ -29,10 +29,6 @@ src/cluster/commands/api.cr: $(API_FILES) Makefile
 spec:
 	crystal spec -v --fail-fast
 
-.PHONY : check_version_mismatch
-check_version_mismatch: shard.yml README.md
-	diff -w -c <(grep version: README.md) <(grep ^version: shard.yml)
-
 .PHONY : version
 version:
 	@if [ "$(VERSION)" = "" ]; then \
@@ -40,7 +36,6 @@ version:
 	  echo "  make version VERSION=$(GUESSED_VERSION)";\
 	else \
 	  sed -i -e 's/^version: .*/version: $(VERSION)/' shard.yml ;\
-	  sed -i -e 's/^    version: [0-9]\+\.[0-9]\+\.[0-9]\+/    version: $(VERSION)/' README.md ;\
 	  echo git commit -a -m "'$(COMMIT_MESSAGE)'" ;\
 	  git commit -a -m 'version: $(VERSION)' ;\
 	  git tag "v$(VERSION)" ;\
