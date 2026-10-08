@@ -1,0 +1,36 @@
+name: Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g. 1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Commit and tag
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          sed -i -e "s/^version: .*/version: ${VERSION}/" shard.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -a -m "version: ${VERSION}"
+          git tag "v${VERSION}"
+          git push origin main --tags
+
+  release:
+    needs: version
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: v${{ inputs.version }}
