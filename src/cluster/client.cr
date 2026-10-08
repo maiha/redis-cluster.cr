@@ -50,7 +50,7 @@ class Redis::Cluster::Client
   end
 
   def ssl_context?
-    if @bootstraps.empty?
+    if @bootstraps.empty? || !ssl?
       nil
     else
       @bootstraps.first.ssl_context
