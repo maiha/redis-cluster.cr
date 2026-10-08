@@ -11,14 +11,9 @@ describe "Mixed TLS/Non-TLS Integration" do
   end
 
   describe "TLS Redis" do
-    it "should create TLS Redis instance" do
-      context = OpenSSL::SSL::Context::Client.new
-      context.ciphers = "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH"
-      context.add_options(OpenSSL::SSL::Options::NO_SSL_V2 | OpenSSL::SSL::Options::NO_SSL_V3)
-      context.verify_mode = OpenSSL::SSL::VerifyMode::None
-      redis = Redis.new(host: "localhost", port: 6380, ssl: true, ssl_context: context)
-      redis.should be_a(Redis)
-      # Don't actually connect in tests - just verify the instance is created correctly
+    it "should build TLS context from bootstrap" do
+      bootstrap = Redis::Cluster::Bootstrap.new(host: "localhost", port: 6380, ssl: true)
+      bootstrap.ssl_context.should be_a(OpenSSL::SSL::Context::Client)
     end
   end
 
@@ -51,6 +46,20 @@ describe "Mixed TLS/Non-TLS Integration" do
       client = Redis::Cluster::Client.new([bootstrap])
 
       client.should be_a(Redis::Cluster::Client)
+    end
+
+    it "should not use TLS context with standard Redis configuration" do
+      bootstrap = Redis::Cluster::Bootstrap.new(host: "localhost", port: 6379)
+      client = Redis::Cluster::Client.new([bootstrap])
+
+      client.ssl_context?.should be_nil
+    end
+
+    it "should use TLS context with TLS Redis configuration" do
+      bootstrap = Redis::Cluster::Bootstrap.new(host: "localhost", port: 6380, ssl: true)
+      client = Redis::Cluster::Client.new([bootstrap])
+
+      client.ssl_context?.should be_a(OpenSSL::SSL::Context::Client)
     end
   end
 
