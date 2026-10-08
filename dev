@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+dev — devcontainer helper (run on the host)
+
+Usage:
+  ./dev <command> [args...]
+
+Commands:
+  up                  Recreate and start the devcontainer (discards the existing container)
+  down                Stop and remove this workspace's devcontainer
+  sh, shell           Open an interactive bash shell in the devcontainer
+  exec <cmd...>       Run a command in the devcontainer (e.g. ./dev exec make compile)
+  claude              Start the claude CLI in the devcontainer
+  help, -h, --help    Show this help
+EOF
+}
+
+case "${1:-}" in
+  "" | help | -h | --help)
+    usage
+    ;;
+
+  up)
+    [ -f ~/.devcontainer.bashrc ] || touch ~/.devcontainer.bashrc
+    devcontainer up --workspace-folder . --remove-existing-container
+    ;;
+
+  down)
+    docker ps -aq --filter "label=devcontainer.local_folder=$(realpath $(pwd))" | xargs -r docker rm -f
+    ;;
+
+  sh | shell)
+    devcontainer exec --workspace-folder . bash
+    ;;
+
+  exec)
+    shift
+    devcontainer exec --workspace-folder . "$@"
+    ;;
+
+  claude)
+    devcontainer exec --workspace-folder . claude
+    ;;
+
+  *)
+    echo "dev: unknown command: $1" >&2
+    echo >&2
+    usage >&2
+    exit 2
+    ;;
+esac

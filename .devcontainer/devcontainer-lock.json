@@ -1,0 +1,24 @@
+{
+  "features": {
+    "ghcr.io/Caesarovich/devcontainer-feature-crystal/crystal:1": {
+      "version": "1.2.0",
+      "resolved": "ghcr.io/caesarovich/devcontainer-feature-crystal/crystal@sha256:0373c3090e6dc0368af594ebd38265fb04010ba4aea7240ba2855c29bc54e5ce",
+      "integrity": "sha256:0373c3090e6dc0368af594ebd38265fb04010ba4aea7240ba2855c29bc54e5ce"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "1.7.1",
+      "resolved": "ghcr.io/devcontainers/features/node@sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6",
+      "integrity": "sha256:8c0de46939b61958041700ee89e3493f3b2e4131a06dc46b4d9423427d06e5f6"
+    },
+    "ghcr.io/itsmechlark/features/redis-server:1": {
+      "version": "1.3.0",
+      "resolved": "ghcr.io/itsmechlark/features/redis-server@sha256:c8d037b266640d33eae14bec350a19853a280c1de7667df94b1ab17d0f072153",
+      "integrity": "sha256:c8d037b266640d33eae14bec350a19853a280c1de7667df94b1ab17d0f072153"
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "version": "1.0.2",
+      "resolved": "ghcr.io/rocker-org/devcontainer-features/apt-packages@sha256:87a4d7750a596a5db034ba8508782f31aebdc2ffe955c66aaecb33d9de2ecdae",
+      "integrity": "sha256:87a4d7750a596a5db034ba8508782f31aebdc2ffe955c66aaecb33d9de2ecdae"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "ubuntu22-cli-dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/Caesarovich/devcontainer-feature-crystal/crystal:1": {
+      "channel": "stable",
+      "version": "1.21"
+    },
+    "ghcr.io/itsmechlark/features/redis-server:1": {
+      "version": "7.0.5"
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "ncurses-term"
+    }
+  },
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces,type=bind",
+  "workspaceFolder": "/workspaces",
+  "mounts": [
+    "source=${localEnv:HOME}/.devcontainer.bashrc,target=/home/vscode/.bashrc.personal,type=bind,readonly",
+    "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind",
+    "source=${localEnv:HOME}/.claude.json,target=/home/vscode/.claude.json,type=bind"
+  ],
+  "onCreateCommand": "grep -q '.bashrc.personal' /home/vscode/.bashrc || echo '[ -f ~/.bashrc.personal ] && . ~/.bashrc.personal' >> /home/vscode/.bashrc; mkdir -p /home/vscode/.locales && (localedef -f UTF-8 -i \"$(echo \"$LANG\" | cut -d. -f1)\" \"/home/vscode/.locales/$LANG\" || true)",
+  "postCreateCommand": "curl -fsSL https://claude.ai/install.sh | bash",
+  "containerEnv": {
+    "TZ": "UTC",
+    "LOCPATH": "/home/vscode/.locales",
+    "LANG": "${localEnv:LANG:C.UTF-8}",
+    "LC_ALL": "${localEnv:LANG:C.UTF-8}"
+  },
+  "remoteEnv": {
+    "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}",
+    "TERM": "${localEnv:TERM:xterm-256color}"
+  },
+  "postStartCommand": "(command -v claude >/dev/null 2>&1 && claude update || true) && (redis-cli ping >/dev/null 2>&1 || redis-server --daemonize yes)",
+  "runArgs": [
+    "--security-opt", "no-new-privileges",
+    "--cap-drop", "ALL"
+  ],
+  "init": true,
+  "overrideCommand": true
+}
